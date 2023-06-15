@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  AniListNative
+//  AniiChan
 //
-//  Created by Joel Sifres on 27/5/23.
+//  Created by Joel Sifres Clemente on 15/6/23.
 //
 
 import SwiftUI

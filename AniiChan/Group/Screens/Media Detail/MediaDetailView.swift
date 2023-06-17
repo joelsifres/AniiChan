@@ -34,42 +34,33 @@ struct MediaDetailView: View {
                                     Button {
                                         
                                     } label: {
-                                        Image(systemName: "eye.fill")
                                         Text("Watching")
                                     }
                                     Button {
                                         
                                     } label: {
-                                        Image(systemName: "checkmark.circle.fill")
                                         Text("Completed")
                                     }
                                     
                                     Button {
                                     } label: {
-                                        Image(systemName: "timer.circle.fill")
                                         Text("On-Hold")
                                     }
                                     Button {
                                         
                                     } label: {
-                                        Image(systemName: "eye.slash.fill")
                                         Text("Dropped")
                                     }
                                     Button {
                                         
                                     } label: {
-                                        Image(systemName: "list.bullet.circle.fill")
                                         Text("Plan to Watch")
                                     }
                                 } label: {
-                                    Image(systemName: "eye.fill")
                                     Text("Watching")
+                                    Image(systemName: "chevron.down")
                                 }
-//                                .buttonStyle(.borderedProminent)
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 12)
-                                .background(Material.ultraThin)
-                                .cornerRadius(4)
+                                .buttonStyle(.borderedProminent)
 
                                 Picker("Episodes", selection: $viewModel.currentEpisode) {
                                     ForEach(0...13, id: \.self) {
@@ -77,7 +68,7 @@ struct MediaDetailView: View {
                                     }
                                 }
                                 .pickerStyle(.menu)
-                                Text("/13")
+                                Text("/ 13")
                                 
                                 Button {
                                     $viewModel.currentEpisode.wrappedValue += 1
@@ -87,31 +78,34 @@ struct MediaDetailView: View {
                             }
                         }
                         .padding()
-                        .padding([.bottom], 20)
                     }
-                }
-                
-                VStack(alignment: .leading) {
-                    Text("Synopsis")
-                        .font(.headline)
-                    Text(
-                    """
-                    The second season of 3-gatsu no Lion.
                     
-                    Now in his second year of high school, Rei Kiriyama continues pushing through his struggles in the professional shogi world as well as his personal life. Surrounded by vibrant personalities at the shogi hall, the school club, and in the local community, his solitary shell slowly begins to crack. Among them are the three Kawamoto sisters—Akari, Hinata, and Momo—who forge an affectionate and familial bond with Rei. Through these ties, he realizes that everyone is burdened by their own emotional hardships and begins learning how to rely on others while supporting them in return.
-                    
-                    Nonetheless, the life of a professional is not easy. Between tournaments, championships, and title matches, the pressure mounts as Rei advances through the ranks and encounters incredibly skilled opponents. As he manages his relationships with those who have grown close to him, the shogi player continues to search for the reason he plays the game that defines his career.
-                    """
-                    )
-                    .lineLimit(isSynopsisExpanded ? nil : 4)
-                    Button {
-                        isSynopsisExpanded.toggle()
-                    } label: {
-                        Text(isSynopsisExpanded ? "Read less" : "Read more")
+                    VStack(alignment: .leading) {
+                        Text("Synopsis")
+                            .font(.headline)
+                        
+                        Text(
+                        """
+                        The second season of 3-gatsu no Lion.
+                        
+                        Now in his second year of high school, Rei Kiriyama continues pushing through his struggles in the professional shogi world as well as his personal life. Surrounded by vibrant personalities at the shogi hall, the school club, and in the local community, his solitary shell slowly begins to crack. Among them are the three Kawamoto sisters—Akari, Hinata, and Momo—who forge an affectionate and familial bond with Rei. Through these ties, he realizes that everyone is burdened by their own emotional hardships and begins learning how to rely on others while supporting them in return.
+                        
+                        Nonetheless, the life of a professional is not easy. Between tournaments, championships, and title matches, the pressure mounts as Rei advances through the ranks and encounters incredibly skilled opponents. As he manages his relationships with those who have grown close to him, the shogi player continues to search for the reason he plays the game that defines his career.
+                        """
+                        )
+                        .lineLimit(isSynopsisExpanded ? nil : 4)
+                        
+                        Button {
+                            isSynopsisExpanded.toggle()
+                        } label: {
+                            Text(isSynopsisExpanded ? "Read less" : "Read more")
+                        }
                     }
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.red)
                 }
-                .padding()
-                .background(Color.red)
+                .background(Color.green)
             }
             .coordinateSpace(name: CoordinateSpaces.scrollView)
             .edgesIgnoringSafeArea(.top)
@@ -140,11 +134,5 @@ struct MediaDetailView: View {
                 EmptyView()
             }
         }
-    }
-}
-
-struct MediaDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        MediaDetailView(viewModel: MediaDetailViewModel())
     }
 }

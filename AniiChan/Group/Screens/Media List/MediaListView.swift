@@ -20,8 +20,7 @@ struct MediaListView: View {
                             })) { $entry in
                                 // Have the MediaRowView as a navigation link to the anime detail instead of as an expandable view
                                 NavigationLink {
-                                    // TBD
-                                    Text("Detail View")
+                                    MediaDetailView(viewModel: MediaDetailViewModel())
                                 } label: {
                                     MediaRowView(model: $entry)
                                         .swipeActions(edge: .leading, allowsFullSwipe: true) {

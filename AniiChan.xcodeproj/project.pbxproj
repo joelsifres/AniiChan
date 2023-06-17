@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC49F33A2A3B7CDE00EC065A /* MediaListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3392A3B7CDE00EC065A /* MediaListView.swift */; };
+		CC49F33C2A3B7D0F00EC065A /* MediaListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F33B2A3B7D0F00EC065A /* MediaListViewModel.swift */; };
+		CC49F33E2A3B7D6200EC065A /* MediaListItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F33D2A3B7D6200EC065A /* MediaListItemModel.swift */; };
+		CC49F3402A3B7D8800EC065A /* MediaRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F33F2A3B7D8800EC065A /* MediaRowView.swift */; };
+		CC49F3432A3CDE9D00EC065A /* MediaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3422A3CDE9D00EC065A /* MediaDetailView.swift */; };
+		CC49F3452A3CDEF400EC065A /* MediaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3442A3CDEF400EC065A /* MediaDetailViewModel.swift */; };
+		CC49F3472A3CE13F00EC065A /* MediaItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3462A3CE13F00EC065A /* MediaItemModel.swift */; };
 		CCC34DBE2A3B75E800109341 /* AniiChanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */; };
 		CCC34DC02A3B75E800109341 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC34DBF2A3B75E800109341 /* ContentView.swift */; };
 		CCC34DC22A3B75E900109341 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCC34DC12A3B75E900109341 /* Assets.xcassets */; };
@@ -34,6 +41,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CC49F3392A3B7CDE00EC065A /* MediaListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListView.swift; sourceTree = "<group>"; };
+		CC49F33B2A3B7D0F00EC065A /* MediaListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListViewModel.swift; sourceTree = "<group>"; };
+		CC49F33D2A3B7D6200EC065A /* MediaListItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListItemModel.swift; sourceTree = "<group>"; };
+		CC49F33F2A3B7D8800EC065A /* MediaRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRowView.swift; sourceTree = "<group>"; };
+		CC49F3422A3CDE9D00EC065A /* MediaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailView.swift; sourceTree = "<group>"; };
+		CC49F3442A3CDEF400EC065A /* MediaDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailViewModel.swift; sourceTree = "<group>"; };
+		CC49F3462A3CE13F00EC065A /* MediaItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemModel.swift; sourceTree = "<group>"; };
 		CCC34DBA2A3B75E800109341 /* AniiChan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AniiChan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AniiChanApp.swift; sourceTree = "<group>"; };
 		CCC34DBF2A3B75E800109341 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -72,6 +86,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CC49F3332A3B7C9900EC065A /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				CC49F3342A3B7C9F00EC065A /* Components */,
+				CC49F3362A3B7CAE00EC065A /* Models */,
+				CC49F3352A3B7CA600EC065A /* Screens */,
+			);
+			path = Group;
+			sourceTree = "<group>";
+		};
+		CC49F3342A3B7C9F00EC065A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				CC49F33F2A3B7D8800EC065A /* MediaRowView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		CC49F3352A3B7CA600EC065A /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				CC49F3412A3CDE8B00EC065A /* Media Detail */,
+				CC49F3382A3B7CBD00EC065A /* Media List */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		CC49F3362A3B7CAE00EC065A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CC49F33D2A3B7D6200EC065A /* MediaListItemModel.swift */,
+				CC49F3462A3CE13F00EC065A /* MediaItemModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		CC49F3382A3B7CBD00EC065A /* Media List */ = {
+			isa = PBXGroup;
+			children = (
+				CC49F3392A3B7CDE00EC065A /* MediaListView.swift */,
+				CC49F33B2A3B7D0F00EC065A /* MediaListViewModel.swift */,
+			);
+			path = "Media List";
+			sourceTree = "<group>";
+		};
+		CC49F3412A3CDE8B00EC065A /* Media Detail */ = {
+			isa = PBXGroup;
+			children = (
+				CC49F3422A3CDE9D00EC065A /* MediaDetailView.swift */,
+				CC49F3442A3CDEF400EC065A /* MediaDetailViewModel.swift */,
+			);
+			path = "Media Detail";
+			sourceTree = "<group>";
+		};
 		CCC34DB12A3B75E800109341 = {
 			isa = PBXGroup;
 			children = (
@@ -95,6 +163,7 @@
 		CCC34DBC2A3B75E800109341 /* AniiChan */ = {
 			isa = PBXGroup;
 			children = (
+				CC49F3332A3B7C9900EC065A /* Group */,
 				CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */,
 				CCC34DBF2A3B75E800109341 /* ContentView.swift */,
 				CCC34DC12A3B75E900109341 /* Assets.xcassets */,
@@ -259,8 +328,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC49F33A2A3B7CDE00EC065A /* MediaListView.swift in Sources */,
 				CCC34DC02A3B75E800109341 /* ContentView.swift in Sources */,
+				CC49F33E2A3B7D6200EC065A /* MediaListItemModel.swift in Sources */,
 				CCC34DBE2A3B75E800109341 /* AniiChanApp.swift in Sources */,
+				CC49F3452A3CDEF400EC065A /* MediaDetailViewModel.swift in Sources */,
+				CC49F33C2A3B7D0F00EC065A /* MediaListViewModel.swift in Sources */,
+				CC49F3402A3B7D8800EC065A /* MediaRowView.swift in Sources */,
+				CC49F3472A3CE13F00EC065A /* MediaItemModel.swift in Sources */,
+				CC49F3432A3CDE9D00EC065A /* MediaDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +493,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"AniiChan/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Anii-Chan";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -435,10 +513,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = joelsifres.AniiChan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -453,6 +533,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"AniiChan/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Anii-Chan";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -471,10 +553,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = joelsifres.AniiChan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

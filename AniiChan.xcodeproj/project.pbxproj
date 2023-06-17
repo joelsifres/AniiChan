@@ -14,6 +14,8 @@
 		CC49F3432A3CDE9D00EC065A /* MediaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3422A3CDE9D00EC065A /* MediaDetailView.swift */; };
 		CC49F3452A3CDEF400EC065A /* MediaDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3442A3CDEF400EC065A /* MediaDetailViewModel.swift */; };
 		CC49F3472A3CE13F00EC065A /* MediaItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3462A3CE13F00EC065A /* MediaItemModel.swift */; };
+		CC5E8CDD2A3E28C600F97F71 /* OffsettableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CDC2A3E28C600F97F71 /* OffsettableScrollView.swift */; };
+		CC5E8CDF2A3E2DF700F97F71 /* View+ReadSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CDE2A3E2DF700F97F71 /* View+ReadSize.swift */; };
 		CCC34DBE2A3B75E800109341 /* AniiChanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */; };
 		CCC34DC02A3B75E800109341 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC34DBF2A3B75E800109341 /* ContentView.swift */; };
 		CCC34DC22A3B75E900109341 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCC34DC12A3B75E900109341 /* Assets.xcassets */; };
@@ -48,6 +50,8 @@
 		CC49F3422A3CDE9D00EC065A /* MediaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailView.swift; sourceTree = "<group>"; };
 		CC49F3442A3CDEF400EC065A /* MediaDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailViewModel.swift; sourceTree = "<group>"; };
 		CC49F3462A3CE13F00EC065A /* MediaItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemModel.swift; sourceTree = "<group>"; };
+		CC5E8CDC2A3E28C600F97F71 /* OffsettableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OffsettableScrollView.swift; sourceTree = "<group>"; };
+		CC5E8CDE2A3E2DF700F97F71 /* View+ReadSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ReadSize.swift"; sourceTree = "<group>"; };
 		CCC34DBA2A3B75E800109341 /* AniiChan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AniiChan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AniiChanApp.swift; sourceTree = "<group>"; };
 		CCC34DBF2A3B75E800109341 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -89,6 +93,7 @@
 		CC49F3332A3B7C9900EC065A /* Group */ = {
 			isa = PBXGroup;
 			children = (
+				CC5E8CDB2A3E28B600F97F71 /* Helpers */,
 				CC49F3342A3B7C9F00EC065A /* Components */,
 				CC49F3362A3B7CAE00EC065A /* Models */,
 				CC49F3352A3B7CA600EC065A /* Screens */,
@@ -138,6 +143,15 @@
 				CC49F3442A3CDEF400EC065A /* MediaDetailViewModel.swift */,
 			);
 			path = "Media Detail";
+			sourceTree = "<group>";
+		};
+		CC5E8CDB2A3E28B600F97F71 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				CC5E8CDC2A3E28C600F97F71 /* OffsettableScrollView.swift */,
+				CC5E8CDE2A3E2DF700F97F71 /* View+ReadSize.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		CCC34DB12A3B75E800109341 = {
@@ -331,10 +345,12 @@
 				CC49F33A2A3B7CDE00EC065A /* MediaListView.swift in Sources */,
 				CCC34DC02A3B75E800109341 /* ContentView.swift in Sources */,
 				CC49F33E2A3B7D6200EC065A /* MediaListItemModel.swift in Sources */,
+				CC5E8CDD2A3E28C600F97F71 /* OffsettableScrollView.swift in Sources */,
 				CCC34DBE2A3B75E800109341 /* AniiChanApp.swift in Sources */,
 				CC49F3452A3CDEF400EC065A /* MediaDetailViewModel.swift in Sources */,
 				CC49F33C2A3B7D0F00EC065A /* MediaListViewModel.swift in Sources */,
 				CC49F3402A3B7D8800EC065A /* MediaRowView.swift in Sources */,
+				CC5E8CDF2A3E2DF700F97F71 /* View+ReadSize.swift in Sources */,
 				CC49F3472A3CE13F00EC065A /* MediaItemModel.swift in Sources */,
 				CC49F3432A3CDE9D00EC065A /* MediaDetailView.swift in Sources */,
 			);

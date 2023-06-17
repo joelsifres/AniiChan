@@ -19,7 +19,6 @@ struct MediaRowView: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(model.name)
                     .font(.headline)
-                    .bold()
                     .lineLimit(1)
 
                 HStack(spacing: 16) {

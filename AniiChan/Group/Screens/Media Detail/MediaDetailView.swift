@@ -13,257 +13,31 @@ struct MediaDetailView: View {
         case scrollView
     }
     
-    private enum Constants: Double {
-        case toolBarHeightOffset = 148
-    }
-    
     @ObservedObject var viewModel: MediaDetailViewModel
     @State private var imageSize = CGSize()
     @State var isSynopsisExpanded: Bool = false
     @State var showToolBar = false
     
+    // MARK: Body
     var body: some View {
         OffsettableScrollView { offset in
-                if imageSize.height > 0 {
-                    showToolBar = offset.y < -imageSize.height + Constants.toolBarHeightOffset.rawValue
-                }
-            print("Offset: \(offset.y)")
-            print("Image size: \(imageSize.height)")
+            if imageSize.height > 0 {
+                showToolBar = offset.y < -imageSize.height
+            }
         } content: {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ZStack {
                     headerImage
-                    VStack {
-                        Spacer()
-                        
-                        Text("3-Gatsu no Lion 2")
-                            .bold()
-                            .foregroundColor(Color(UIColor.label))
-                        
-                        HStack {
-                            Menu {
-                                Button {
-                                    
-                                } label: {
-                                    Text("Watching")
-                                }
-                                Button {
-                                    
-                                } label: {
-                                    Text("Completed")
-                                }
-                                
-                                Button {
-                                } label: {
-                                    Text("On-Hold")
-                                }
-                                Button {
-                                    
-                                } label: {
-                                    Text("Dropped")
-                                }
-                                Button {
-                                    
-                                } label: {
-                                    Text("Plan to Watch")
-                                }
-                            } label: {
-                                Text("Watching")
-                                Image(systemName: "chevron.down")
-                            }
-                            .buttonStyle(.borderedProminent)
-                            
-                            Picker("Episodes", selection: $viewModel.currentEpisode) {
-                                ForEach(0...13, id: \.self) {
-                                    Text("\($0)")
-                                }
-                            }
-                            .pickerStyle(.menu)
-                            Text("/ 13")
-                            
-                            Button {
-                                $viewModel.currentEpisode.wrappedValue += 1
-                            } label: {
-                                Image(systemName: "plus.circle.fill")
-                            }
-                        }
-                    }
-                    .padding()
+                    headerContent
                 }
                 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Synopsis")
-                        .font(.headline)
-                    
-                    Text(
-                        """
-                        The second season of 3-gatsu no Lion.
-                        
-                        Now in his second year of high school, Rei Kiriyama continues pushing through his struggles in the professional shogi world as well as his personal life. Surrounded by vibrant personalities at the shogi hall, the school club, and in the local community, his solitary shell slowly begins to crack. Among them are the three Kawamoto sisters—Akari, Hinata, and Momo—who forge an affectionate and familial bond with Rei. Through these ties, he realizes that everyone is burdened by their own emotional hardships and begins learning how to rely on others while supporting them in return.
-                        
-                        Nonetheless, the life of a professional is not easy. Between tournaments, championships, and title matches, the pressure mounts as Rei advances through the ranks and encounters incredibly skilled opponents. As he manages his relationships with those who have grown close to him, the shogi player continues to search for the reason he plays the game that defines his career.
-                        """
-                    )
-                    .lineLimit(isSynopsisExpanded ? nil : 4)
-                    
-                    Button {
-                        isSynopsisExpanded.toggle()
-                    } label: {
-                        Text(isSynopsisExpanded ? "Read less" : "Read more")
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding()
-                .previewBackground()
-                
-                ScrollView(.horizontal) {
-                    LazyHStack(alignment: .center, spacing: 16) {
-                        // ForEach
-                        VStack(alignment: .leading) {
-                            Text("Format")
-                                .font(.headline)
-                            
-                            Text("TV")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Episodes")
-                                .font(.headline)
-                            
-                            Text("22")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Episode Duration")
-                                .font(.headline)
-                            
-                            Text("25 mins")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Status")
-                                .font(.headline)
-                            
-                            Text("Finished")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Start Date")
-                                .font(.headline)
-                            
-                            Text("Oct 14, 2017")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("End Date")
-                                .font(.headline)
-                            
-                            Text("Mar 31, 2018")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Season")
-                                .font(.headline)
-                            
-                            Text("Fall 2017")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Average Score")
-                                .font(.headline)
-                            
-                            Text("89%")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Mean Score")
-                                .font(.headline)
-                            
-                            Text("89%")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                        
-                        VStack(alignment: .leading) {
-                            Text("Genres")
-                                .font(.headline)
-                                
-                            Text("Drama, Slice of Life")
-                                .foregroundColor(.gray)
-                                .font(.subheadline)
-                        }
-                    }
-                    .padding()
-                }
-                .previewBackground()
-                
-                VStack(alignment: .leading) {
-                    Text("External & Streaming links")
-                        .font(.headline)
-                    
-                    ScrollView(.horizontal) {
-                        LazyHStack(alignment: .center, spacing: 16) {
-                            // ForEach
-                            HStack(alignment: .center) {
-                                Image(systemName: "link")
-                                
-                                Text("Official Site")
-                                    .foregroundColor(.gray)
-                                    .font(.subheadline)
-                            }
-                            
-                            HStack(alignment: .center) {
-                                Image(systemName: "link")
-                                
-                                Text("Twitter")
-                                    .foregroundColor(.gray)
-                                    .font(.subheadline)
-                            }
-                            
-                            HStack(alignment: .center) {
-                                Image(systemName: "link")
-                                
-                                Text("Crunchyrroll")
-                                    .foregroundColor(.gray)
-                                    .font(.subheadline)
-                            }
-                            
-                            HStack(alignment: .center) {
-                                Image(systemName: "link")
-                                
-                                Text("Funimation")
-                                    .foregroundColor(.gray)
-                                    .font(.subheadline)
-                            }
-                            
-                            HStack(alignment: .center) {
-                                Image(systemName: "link")
-                                
-                                Text("Netflix")
-                                    .foregroundColor(.gray)
-                                    .font(.subheadline)
-                            }
-                        }
-                    }
-                }
-                .padding()
-                .previewBackground()
+                synopsis
+                information
+                relations
+                staff
+                characters
+                externalLinks
+                reviews
             }
             .padding(.bottom, 16)
         }
@@ -273,21 +47,11 @@ struct MediaDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(showToolBar ? .visible : .hidden)
     }
+}
+
+extension MediaDetailView {
     
-    @Environment(\.presentationMode) var presentationMode: Binding
-    var btnBack : some View {
-        Button(action: {
-            self.presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image("ic_back") // set image here
-                    .aspectRatio(contentMode: .fit)
-                    .foregroundColor(.white)
-                Text("<")
-            }
-        }
-    }
-    
+    // MARK: Header
     var headerImage: some View {
         AsyncImage(
             url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg")!
@@ -312,6 +76,347 @@ struct MediaDetailView: View {
             }
         }
     }
+    
+    var headerContent: some View {
+        VStack {
+            Spacer()
+            
+            Text("3-Gatsu no Lion 2")
+                .bold()
+                .foregroundColor(Color(UIColor.label))
+            
+            HStack {
+                Menu {
+                    ForEach(MediaItemModel.AnimeMediaState.allCases) { state in
+                        Button {
+                            viewModel.model.state = state
+                        } label: {
+                            Text(state.rawValue)
+                        }
+                    }
+                } label: {
+                    Text(viewModel.model.state.rawValue)
+                    Image(systemName: "chevron.down")
+                }
+                .buttonStyle(.borderedProminent)
+                
+                HStack(spacing: 0) {
+                    Picker("Episodes", selection: $viewModel.model.currentEpisode) {
+                        ForEach(0...13, id: \.self) {
+                            Text("\($0)")
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    
+                    Text("/ 13")
+                }
+            }
+            
+            HStack {
+                Button {
+                    // Highest Ranked
+                } label: {
+                    Image(systemName: "star.fill")
+                    
+                    Text("#7 Highest Rated")
+                }
+                .controlSize(.small)
+                .buttonStyle(.bordered)
+                .tint(.yellow)
+                
+                Button {
+                    // Highest Ranked
+                } label: {
+                    Image(systemName: "heart.fill")
+                    
+                    Text(" #340 Most Popular")
+                }
+                .controlSize(.small)
+                .buttonStyle(.bordered)
+                .tint(.pink)
+            }
+        }
+        .padding()
+    }
+    
+    // MARK: Synopsis
+    var synopsis: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Synopsis")
+                .font(.title)
+                .bold()
+            
+            Text(
+                """
+                The second season of 3-gatsu no Lion.
+                
+                Now in his second year of high school, Rei Kiriyama continues pushing through his struggles in the professional shogi world as well as his personal life. Surrounded by vibrant personalities at the shogi hall, the school club, and in the local community, his solitary shell slowly begins to crack. Among them are the three Kawamoto sisters—Akari, Hinata, and Momo—who forge an affectionate and familial bond with Rei. Through these ties, he realizes that everyone is burdened by their own emotional hardships and begins learning how to rely on others while supporting them in return.
+                
+                Nonetheless, the life of a professional is not easy. Between tournaments, championships, and title matches, the pressure mounts as Rei advances through the ranks and encounters incredibly skilled opponents. As he manages his relationships with those who have grown close to him, the shogi player continues to search for the reason he plays the game that defines his career.
+                """
+            )
+            .lineLimit(isSynopsisExpanded ? nil : 5)
+            
+            Button {
+                isSynopsisExpanded.toggle()
+            } label: {
+                Text(isSynopsisExpanded ? "Read less" : "Read more")
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding()
+        .previewBackground()
+    }
+    
+    // MARK: Information
+    var information: some View {
+        VStack(alignment: .leading) {
+            Text("Information")
+                .font(.title)
+                .bold()
+            
+            ScrollView(.horizontal) {
+                LazyHStack(alignment: .center, spacing: 16) {
+                    // ForEach
+                    VStack(alignment: .leading) {
+                        Text("Format")
+                            .font(.headline)
+                        
+                        Text("TV")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Episodes")
+                            .font(.headline)
+                        
+                        Text("22")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Episode Duration")
+                            .font(.headline)
+                        
+                        Text("25 mins")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Status")
+                            .font(.headline)
+                        
+                        Text("Finished")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Start Date")
+                            .font(.headline)
+                        
+                        Text("Oct 14, 2017")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("End Date")
+                            .font(.headline)
+                        
+                        Text("Mar 31, 2018")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Season")
+                            .font(.headline)
+                        
+                        Text("Fall 2017")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Average Score")
+                            .font(.headline)
+                        
+                        Text("89%")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Mean Score")
+                            .font(.headline)
+                        
+                        Text("89%")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                    
+                    VStack(alignment: .leading) {
+                        Text("Genres")
+                            .font(.headline)
+                        
+                        Text("Drama, Slice of Life")
+                            .foregroundColor(.gray)
+                            .font(.subheadline)
+                    }
+                }
+            }
+        }
+        .padding()
+        .previewBackground()
+    }
+    
+    // MARK: Relations
+    var relations: some View {
+        VStack(alignment: .leading) {
+            Text("Relations")
+                .font(.title)
+                .bold()
+            
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 16) {
+                    MediaCardView(size: .medium)
+                    MediaCardView(size: .medium)
+                    MediaCardView(size: .medium)
+                }
+            }
+        }
+        .padding()
+    }
+    
+    // MARK: Staff
+    var staff: some View {
+        VStack(alignment: .leading) {
+            Text("Staff")
+                .font(.title)
+                .bold()
+            
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 16) {
+                    MediaCardView(size: .small)
+                    MediaCardView(size: .small)
+                    MediaCardView(size: .small)
+                }
+            }
+        }
+        .padding()
+    }
+    
+    // MARK: Characters
+    var characters: some View {
+        VStack(alignment: .leading) {
+            Text("Characters")
+                .font(.title)
+                .bold()
+            
+            ScrollView(.horizontal) {
+                LazyHStack(spacing: 16) {
+                    MediaCardView(size: .small)
+                    MediaCardView(size: .small)
+                    MediaCardView(size: .small)
+                }
+            }
+        }
+        .padding()
+    }
+    
+    // MARK: External Links
+    var externalLinks: some View {
+        VStack(alignment: .leading) {
+            Text("External links")
+                .font(.title)
+                .bold()
+            
+            ScrollView(.horizontal) {
+                LazyHStack(alignment: .center, spacing: 16) {
+                    // ForEach
+                    Button {
+                        
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "link")
+                            
+                            Text("Official Site")
+                        }
+                    }
+                    
+                    Button {
+                        
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "link")
+                            
+                            Text("Twitter")
+                        }
+                    }
+                    Button {
+                        
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "link")
+                            
+                            Text("Crunchyrroll")
+                        }
+                    }
+                    Button {
+                        
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "link")
+                            
+                            Text("Funimation")
+                        }
+                    }
+                    Button {
+                        
+                    } label: {
+                        HStack(alignment: .center) {
+                            Image(systemName: "link")
+                            
+                            Text("Netflix")
+                        }
+                    }
+                }
+            }
+        }
+        .padding()
+        .previewBackground()
+    }
+    
+    // MARK: Reviews
+    var reviews: some View {
+        VStack(alignment: .leading) {
+            Text("Reviews")
+                .font(.title)
+                .bold()
+            
+            VStack(spacing: 16) {
+                ReviewCondensedView()
+                ReviewCondensedView()
+                ReviewCondensedView()
+            }
+            
+            HStack {
+                Spacer()
+                
+                NavigationLink {
+                    ReviewListView()
+                } label: {
+                    Text("More reviews")
+                    Image(systemName: "chevron.right")
+                }
+            }
+        }
+        .padding()
+    }
 }
 
 struct MediaDetailView_Previews: PreviewProvider {
@@ -319,31 +424,5 @@ struct MediaDetailView_Previews: PreviewProvider {
         NavigationView {
             MediaDetailView(viewModel: MediaDetailViewModel())
         }
-    }
-}
-
-extension UINavigationController {
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        interactivePopGestureRecognizer?.delegate = nil
-    }
-}
-
-extension View {
-    var isPreview: Bool {
-        return ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-    }
-    
-    func previewBackground() -> some View {
-        self
-            .background(
-                isPreview ? Color(
-                    UIColor(
-                        red: .random(in: 0...1),
-                        green: .random(in: 0...1),
-                        blue: .random(in: 0...1),
-                        alpha: 1
-                    )
-                ) : Color.clear)
     }
 }

@@ -37,3 +37,9 @@ struct MediaListItemModel: Identifiable {
         }
     }
 }
+
+extension MediaListItemModel {
+    static func map(to model: MediaItemModel) {
+        
+    }
+}

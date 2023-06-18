@@ -12,13 +12,14 @@ protocol IterableEnum: CaseIterable, Identifiable {
     var stringValue: String { get }
 }
 
-struct MediatemModel: Identifiable {
+struct MediaItemModel: Identifiable {
     enum AnimeMediaState: String, CaseIterable, Identifiable {
         case watching = "Watching"
         case completed = "Completed"
         case onHold = "On hold"
         case dropped = "Dropped"
         case planToWatch = "Plan to Watch"
+        case addToList = "Add to List"
         
         var id: String {
             self.rawValue
@@ -32,6 +33,7 @@ struct MediatemModel: Identifiable {
         case onHold = "On hold"
         case dropped = "Dropped"
         case planToWatch = "Plan to Watch"
+        case addToList = "Add to List"
         
         var id: String {
             self.rawValue

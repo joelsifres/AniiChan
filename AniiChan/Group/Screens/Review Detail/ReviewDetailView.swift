@@ -53,7 +53,53 @@ struct ReviewDetailView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
+                AsyncImage(
+                    url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/banner/98478-BDH64RDmBlr8.jpg")!
+                ) { phase in
+                    switch phase {
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .scaledToFit()
+                            .clipped()
+                            .overlay(
+                                LinearGradient(gradient: Gradient(colors: [.clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
+                                
+                            )
+                    case .failure, .empty:
+                        EmptyView()
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
+                
                 VStack(spacing: 16) {
+                    NavigationLink {
+                        Text("RoryBorrows Profile")
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Text("Written by RoryBorrows")
+                                .foregroundColor(.gray)
+                                .font(.subheadline)
+                            
+                            AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/user/avatar/large/b47276-HVV4cFqvS7fm.jpg")) { phase in
+                                switch phase {
+                                case .success(let image):
+                                    image
+                                        .resizable()
+                                        .scaledToFill()
+                                        .frame(width: 20, height: 20)
+                                case .failure, .empty:
+                                    EmptyView()
+                                @unknown default:
+                                    EmptyView()
+                                }
+                            }
+                            .cornerRadius(5)
+                        }
+                    }
+                    
                     Text(
                 """
                 A strong display of emotional resonance; the second season of 3-gatsu no Lion manages to go above and beyond expectations to provide something of overwhelming beauty.
@@ -98,57 +144,37 @@ struct ReviewDetailView: View {
                     .background(Color.green)
                     .cornerRadius(5)
                     
+                    Text("236 out of 253 users liked this review")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    
                     HStack {
+                        Spacer()
                         Button {
                             
                         } label: {
                             Image(systemName: "hand.thumbsup.fill")
-                            Text("89")
                         }
+                        .buttonStyle(.bordered)
                         .tint(.green)
+                        
                         Button {
                             
                         } label: {
                             Image(systemName: "hand.thumbsdown.fill")
-                            Text("21")
                         }
+                        .buttonStyle(.bordered)
                         .tint(.red)
                         
                         Spacer()
-                        
-                        NavigationLink {
-                            
-                        } label: {
-                            HStack {
-                                Spacer()
-                                Text("Written by RoryBorrows")
-                                    .foregroundColor(.gray)
-                                    .font(.subheadline)
-                                
-                                AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/user/avatar/large/b47276-HVV4cFqvS7fm.jpg")) { phase in
-                                    switch phase {
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .scaledToFill()
-                                            .frame(width: 20, height: 20)
-                                    case .failure, .empty:
-                                        EmptyView()
-                                    @unknown default:
-                                        EmptyView()
-                                    }
-                                }
-                                .cornerRadius(5)
-                            }
-                        }
                     }
                 }
+                .padding()
             }
-            .padding()
             .padding(.bottom, 16)
         }
         .navigationTitle("3-gatsu no Lion 2 Review")
-        .navigationBarTitleDisplayMode(.large)
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem {
                 Menu {

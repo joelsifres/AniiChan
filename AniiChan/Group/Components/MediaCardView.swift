@@ -91,7 +91,7 @@ extension MediaCardView {
             .frame(maxWidth: .infinity)
             .padding(size.padding)
         }
-        .background(Color(uiColor: .systemGroupedBackground))
+        .background(Color.secondarySystemBackground)
         .frame(maxWidth: size.cgSize.width * 4)
         .cornerRadius(5)
     }
@@ -136,17 +136,18 @@ extension MediaCardView {
             .padding(.horizontal, size.padding)
         }
         .frame(width: size.cgSize.width, height: size.cgSize.height)
-        .background(Color(uiColor: .systemGroupedBackground))
         .cornerRadius(5)
     }
 }
 
 struct MediaCardView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            MediaCardView(size: .small)
-            MediaCardView(size: .medium)
-            MediaCardView(size: .large)
+        ScrollView {
+            VStack {
+                MediaCardView(size: .small)
+                MediaCardView(size: .medium)
+                MediaCardView(size: .large)
+            }
         }
     }
 }

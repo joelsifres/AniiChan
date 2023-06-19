@@ -43,9 +43,22 @@ struct MediaDetailView: View {
         }
         .coordinateSpace(name: CoordinateSpaces.scrollView)
         .edgesIgnoringSafeArea(.top)
-        .navigationTitle("3-Gatsu no Lion 2")
+        .navigationTitle(showToolBar ? "3-Gatsu no Lion 2" : "")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(showToolBar ? .visible : .hidden, for: .navigationBar)
         .toolbar(showToolBar ? .visible : .hidden)
+        .toolbar {
+            Button {
+                
+            } label: {
+                Image(systemName: "square.and.arrow.up")
+            }
+            Button {
+                
+            } label: {
+                Image(systemName: "ellipsis")
+            }
+        }
     }
 }
 
@@ -100,16 +113,28 @@ extension MediaDetailView {
                 }
                 .buttonStyle(.borderedProminent)
                 
-                HStack(spacing: 0) {
-                    Picker("Episodes", selection: $viewModel.model.currentEpisode) {
-                        ForEach(0...13, id: \.self) {
-                            Text("\($0)")
+                HStack {
+                    HStack(spacing: 0) {
+                        Picker("Episodes", selection: $viewModel.model.currentEpisode) {
+                            ForEach(0...viewModel.model.totalEpisodes, id: \.self) {
+                                Text("\($0)")
+                            }
                         }
+                        .pickerStyle(.menu)
+                        
+                        Text("/   \(viewModel.model.totalEpisodes) episodes")
                     }
-                    .pickerStyle(.menu)
-                    
-                    Text("/ 13")
                 }
+            }
+            
+            HStack {
+                Text("Score:")
+                RatingSmileyView(viewModel: RatingSmileyViewModel(rating: .smile))
+            }
+            
+            HStack {
+                Text("Score:")
+                RatingStarView(value: 0.5)
             }
             
             HStack {
@@ -165,7 +190,6 @@ extension MediaDetailView {
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .previewBackground()
     }
     
     // MARK: Information
@@ -271,7 +295,6 @@ extension MediaDetailView {
             }
         }
         .padding()
-        .previewBackground()
     }
     
     // MARK: Relations
@@ -388,7 +411,6 @@ extension MediaDetailView {
             }
         }
         .padding()
-        .previewBackground()
     }
     
     // MARK: Reviews

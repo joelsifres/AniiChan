@@ -41,12 +41,7 @@ struct MediaRowView: View {
                     
                     Spacer()
                     
-                    HStack(spacing: 2) {
-                        Text("4.5")
-                        
-                        Image(systemName: "star.fill")
-                    }
-                    
+                    RatingView(score: 4.5)
                 }
                 .foregroundColor(.gray)
                 .font(.subheadline)
@@ -66,6 +61,18 @@ struct MediaRowView: View {
             return .red
         case .planToWatch:
             return .gray
+        }
+    }
+}
+
+struct RatingView: View {
+    let score: Double
+    
+    var body: some View {
+        HStack(spacing: 2) {
+            Text(String(format: "%.1f", score))
+            
+            Image(systemName: "star.fill")
         }
     }
 }

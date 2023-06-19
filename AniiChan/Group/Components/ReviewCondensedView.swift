@@ -78,7 +78,7 @@ struct ReviewCondensedView: View {
             }
         }
         .padding()
-        .background(Color(uiColor: .systemGroupedBackground))
+        .background(Color.secondarySystemBackground)
         .cornerRadius(10)
     }
 }

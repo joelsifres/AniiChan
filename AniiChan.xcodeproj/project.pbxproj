@@ -22,6 +22,9 @@
 		CC5E8CE72A3F0EDB00F97F71 /* ReviewCondensedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CE62A3F0EDB00F97F71 /* ReviewCondensedView.swift */; };
 		CC5E8CEB2A3F0F6100F97F71 /* ReviewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CEA2A3F0F6100F97F71 /* ReviewListView.swift */; };
 		CC5E8CED2A3F11AA00F97F71 /* ReviewDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CEC2A3F11AA00F97F71 /* ReviewDetailView.swift */; };
+		CC5E8CEF2A3F797700F97F71 /* Color+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CEE2A3F797700F97F71 /* Color+UIColor.swift */; };
+		CC5E8CF22A40CC5100F97F71 /* RatingStarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CF12A40CC5100F97F71 /* RatingStarView.swift */; };
+		CC5E8CF42A40CEA200F97F71 /* RatingSmileyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC5E8CF32A40CEA200F97F71 /* RatingSmileyView.swift */; };
 		CCC34DBE2A3B75E800109341 /* AniiChanApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */; };
 		CCC34DC02A3B75E800109341 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC34DBF2A3B75E800109341 /* ContentView.swift */; };
 		CCC34DC22A3B75E900109341 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCC34DC12A3B75E900109341 /* Assets.xcassets */; };
@@ -64,6 +67,9 @@
 		CC5E8CE62A3F0EDB00F97F71 /* ReviewCondensedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewCondensedView.swift; sourceTree = "<group>"; };
 		CC5E8CEA2A3F0F6100F97F71 /* ReviewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewListView.swift; sourceTree = "<group>"; };
 		CC5E8CEC2A3F11AA00F97F71 /* ReviewDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewDetailView.swift; sourceTree = "<group>"; };
+		CC5E8CEE2A3F797700F97F71 /* Color+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+UIColor.swift"; sourceTree = "<group>"; };
+		CC5E8CF12A40CC5100F97F71 /* RatingStarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingStarView.swift; sourceTree = "<group>"; };
+		CC5E8CF32A40CEA200F97F71 /* RatingSmileyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingSmileyView.swift; sourceTree = "<group>"; };
 		CCC34DBA2A3B75E800109341 /* AniiChan.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AniiChan.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AniiChanApp.swift; sourceTree = "<group>"; };
 		CCC34DBF2A3B75E800109341 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -116,6 +122,7 @@
 		CC49F3342A3B7C9F00EC065A /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				CC5E8CF02A40CC3400F97F71 /* Ratings */,
 				CC49F33F2A3B7D8800EC065A /* MediaRowView.swift */,
 				CC5E8CE42A3F0EB200F97F71 /* MediaCardView.swift */,
 				CC5E8CE62A3F0EDB00F97F71 /* ReviewCondensedView.swift */,
@@ -168,6 +175,7 @@
 				CC5E8CDE2A3E2DF700F97F71 /* View+ReadSize.swift */,
 				CC5E8CE02A3EEF9000F97F71 /* View+PreviewBackground.swift */,
 				CC5E8CE22A3EEFFE00F97F71 /* UINavigationController+SwipeGesture.swift */,
+				CC5E8CEE2A3F797700F97F71 /* Color+UIColor.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -186,6 +194,15 @@
 				CC5E8CEC2A3F11AA00F97F71 /* ReviewDetailView.swift */,
 			);
 			path = "Review Detail";
+			sourceTree = "<group>";
+		};
+		CC5E8CF02A40CC3400F97F71 /* Ratings */ = {
+			isa = PBXGroup;
+			children = (
+				CC5E8CF12A40CC5100F97F71 /* RatingStarView.swift */,
+				CC5E8CF32A40CEA200F97F71 /* RatingSmileyView.swift */,
+			);
+			path = Ratings;
 			sourceTree = "<group>";
 		};
 		CCC34DB12A3B75E800109341 = {
@@ -381,14 +398,17 @@
 				CCC34DC02A3B75E800109341 /* ContentView.swift in Sources */,
 				CC49F33E2A3B7D6200EC065A /* MediaListItemModel.swift in Sources */,
 				CC5E8CE52A3F0EB200F97F71 /* MediaCardView.swift in Sources */,
+				CC5E8CEF2A3F797700F97F71 /* Color+UIColor.swift in Sources */,
 				CC5E8CDD2A3E28C600F97F71 /* OffsettableScrollView.swift in Sources */,
 				CC5E8CE72A3F0EDB00F97F71 /* ReviewCondensedView.swift in Sources */,
+				CC5E8CF42A40CEA200F97F71 /* RatingSmileyView.swift in Sources */,
 				CCC34DBE2A3B75E800109341 /* AniiChanApp.swift in Sources */,
 				CC49F3452A3CDEF400EC065A /* MediaDetailViewModel.swift in Sources */,
 				CC5E8CEB2A3F0F6100F97F71 /* ReviewListView.swift in Sources */,
 				CC49F33C2A3B7D0F00EC065A /* MediaListViewModel.swift in Sources */,
 				CC5E8CE32A3EEFFE00F97F71 /* UINavigationController+SwipeGesture.swift in Sources */,
 				CC49F3402A3B7D8800EC065A /* MediaRowView.swift in Sources */,
+				CC5E8CF22A40CC5100F97F71 /* RatingStarView.swift in Sources */,
 				CC5E8CDF2A3E2DF700F97F71 /* View+ReadSize.swift in Sources */,
 				CC49F3472A3CE13F00EC065A /* MediaItemModel.swift in Sources */,
 				CC49F3432A3CDE9D00EC065A /* MediaDetailView.swift in Sources */,

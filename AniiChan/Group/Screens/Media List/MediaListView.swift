@@ -47,10 +47,9 @@ struct MediaListView: View {
                     }
                 }
             }
-            .navigationTitle("Kipik's List")
+            .navigationTitle("Kipik's Anime List")
             .toolbar {
                 Button {
-
                 } label: {
                     Image(systemName: "line.2.horizontal.decrease.circle")
                 }

@@ -9,19 +9,30 @@ import SwiftUI
 
 struct MediaCardView: View {
     
-    enum CardSize: Double {
-        case small = 80
-        case medium = 200
-        case large = 300
+    enum CardType {
+        case small
+        case medium
+        case large
+        
+        var size: Double {
+            switch self {
+            case .small:
+                return 80
+            case .medium:
+                return 200
+            case .large:
+                return 300
+            }
+        }
         
         var cgSize: CGSize {
             switch self {
             case .small:
-                return CGSize(width: rawValue * 0.71, height: rawValue)
+                return CGSize(width: self.size * 0.71, height: self.size)
             case .medium:
-                return CGSize(width: rawValue * 0.71, height: rawValue)
+                return CGSize(width: self.size * 0.71, height: self.size)
             case .large:
-                return CGSize(width: rawValue * 0.71, height: rawValue)
+                return CGSize(width: self.size * 0.71, height: self.size)
             }
         }
         
@@ -37,13 +48,15 @@ struct MediaCardView: View {
         }
     }
     
-    var size: CardSize
+    var type: CardType
+    
+    let text: String
     
     var body: some View {
         Button {
             // TBD
         } label: {
-            switch size {
+            switch type {
             case .small:
                 smallSizeCard
             case .medium:
@@ -68,37 +81,36 @@ extension MediaCardView {
                         .resizable()
                         .scaledToFill()
                         .clipped()
-                        .frame(width: size.cgSize.width, height: size.cgSize.height)
+                        .frame(width: type.cgSize.width, height: type.cgSize.height)
                 case .failure, .empty:
                     EmptyView()
                 @unknown default:
                     EmptyView()
                 }
             }
-            .cornerRadius(5)
+            .clipped()
             
             VStack(alignment: .leading) {
-                Text("Director")
+                Text(text)
                     .font(.body)
+                    .lineLimit(2, reservesSpace: true)
                 
                 Spacer()
                 
-                Text("Akiyuki Shinbou")
+                Text("Director")
                     .font(.caption)
                     .foregroundColor(.gray)
-                    .lineLimit(3)
             }
-            .frame(maxWidth: .infinity)
-            .padding(size.padding)
+            .padding(type.padding)
         }
         .background(Color.secondarySystemBackground)
-        .frame(maxWidth: size.cgSize.width * 4)
+        .frame(maxWidth: type.cgSize.width * 4)
         .cornerRadius(5)
     }
     
     // MARK: Medium Size
     private var mediumSizeCard: some View {
-        ZStack {
+        VStack(alignment: .leading, spacing: 0) {
             AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg")) { phase in
                 switch phase {
                 case .success(let image):
@@ -106,37 +118,37 @@ extension MediaCardView {
                         .resizable()
                         .scaledToFill()
                         .clipped()
-                        .overlay(
-                            LinearGradient(gradient: Gradient(colors: [.clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
-                        )
+                        .frame(width: type.cgSize.width, height: type.cgSize.height)
                 case .failure, .empty:
                     EmptyView()
                 @unknown default:
                     EmptyView()
                 }
             }
-            .cornerRadius(5)
+            .clipped()
             
             VStack(alignment: .leading) {
-                
-                Spacer()
                 Text("Source")
-                    .font(.headline)
+                    .font(.caption)
                     .foregroundColor(.blue)
                 
-                Text("3-gatsu no Lion")
-                    .lineLimit(3)
+                Text(text)
+                    .lineLimit(3, reservesSpace: true)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Text("Manga · Releasing")
                     .font(.caption)
                     .foregroundColor(.gray)
+                
+                Spacer()
             }
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, size.padding / 2)
-            .padding(.horizontal, size.padding)
+            .frame(maxHeight: .infinity)
+            .padding(type.padding)
         }
-        .frame(width: size.cgSize.width, height: size.cgSize.height)
+        .background(Color.systemGroupedBackground)
         .cornerRadius(5)
+        .frame(width: type.cgSize.width)
+        .frame(maxHeight: .infinity)
     }
 }
 
@@ -144,9 +156,14 @@ struct MediaCardView_Previews: PreviewProvider {
     static var previews: some View {
         ScrollView {
             VStack {
-                MediaCardView(size: .small)
-                MediaCardView(size: .medium)
-                MediaCardView(size: .large)
+                MediaCardView(type: .small, text: "Rei Kiriyama")
+                ScrollView(.horizontal) {
+                    HStack {
+                        MediaCardView(type: .medium, text: "3-Gatsu no Lion")
+                        MediaCardView(type: .medium, text: "Neon Genesis Evangelion")
+                    }
+                    .padding()
+                }
             }
         }
     }

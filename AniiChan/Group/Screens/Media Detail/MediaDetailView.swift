@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import YouTubePlayerKit
 
 struct MediaDetailView: View {
     
@@ -17,6 +18,9 @@ struct MediaDetailView: View {
     @State private var imageSize = CGSize()
     @State var isSynopsisExpanded: Bool = false
     @State var showToolBar = false
+    @State var isPresented = false
+    
+    let youTubePlayer: YouTubePlayer = "https://www.youtube.com/watch?v=OfSaJb5OOPA"
     
     // MARK: Body
     var body: some View {
@@ -27,19 +31,35 @@ struct MediaDetailView: View {
         } content: {
             LazyVStack(alignment: .leading, spacing: 0) {
                 ZStack {
-                    headerImage
+                    Spacer()
+                        .frame(height: imageSize.height)
                     headerContent
                 }
+                .background(
+                    LinearGradient(gradient: Gradient(colors: [.clear, .clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
+                )
                 
-                synopsis
-                information
-                relations
-                staff
-                characters
-                externalLinks
-                reviews
+                VStack(spacing: 0) {
+                    synopsis
+                    information
+                    relations
+                    characters
+                    staff
+                    trailer
+                    externalLinks
+                    reviews
+                    recommendations
+                }
+                .background(Color.systemBackground)
             }
             .padding(.bottom, 16)
+        }
+        .background {
+            VStack {
+                headerImage
+                    .scaledToFit()
+                Spacer()
+            }
         }
         .coordinateSpace(name: CoordinateSpaces.scrollView)
         .edgesIgnoringSafeArea(.top)
@@ -54,10 +74,13 @@ struct MediaDetailView: View {
                 Image(systemName: "square.and.arrow.up")
             }
             Button {
-                
+                self.isPresented.toggle()
             } label: {
-                Image(systemName: "ellipsis")
+                Image(systemName: "square.and.pencil")
             }
+        }
+        .sheet(isPresented: $isPresented) {
+            ListEditorView()
         }
     }
 }
@@ -76,8 +99,7 @@ extension MediaDetailView {
                     .scaledToFill()
                     .clipped()
                     .overlay(
-                        LinearGradient(gradient: Gradient(colors: [.clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
-                        
+                        LinearGradient(gradient: Gradient(colors: [.clear, .clear, .clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
                     )
                     .readSize { imageSize in
                         self.imageSize = imageSize
@@ -99,42 +121,9 @@ extension MediaDetailView {
                 .foregroundColor(Color(UIColor.label))
             
             HStack {
-                Menu {
-                    ForEach(MediaItemModel.AnimeMediaState.allCases) { state in
-                        Button {
-                            viewModel.model.state = state
-                        } label: {
-                            Text(state.rawValue)
-                        }
-                    }
-                } label: {
-                    Text(viewModel.model.state.rawValue)
-                    Image(systemName: "chevron.down")
-                }
-                .buttonStyle(.borderedProminent)
+                MediaStateView(state: $viewModel.model.state)
                 
-                HStack {
-                    HStack(spacing: 0) {
-                        Picker("Episodes", selection: $viewModel.model.currentEpisode) {
-                            ForEach(0...viewModel.model.totalEpisodes, id: \.self) {
-                                Text("\($0)")
-                            }
-                        }
-                        .pickerStyle(.menu)
-                        
-                        Text("/   \(viewModel.model.totalEpisodes) episodes")
-                    }
-                }
-            }
-            
-            HStack {
-                Text("Score:")
-                RatingSmileyView(viewModel: RatingSmileyViewModel(rating: .smile))
-            }
-            
-            HStack {
-                Text("Score:")
-                RatingStarView(viewModel: RatingStarViewModel(rating: 0.25))
+                MediaProgressView(progress: $viewModel.model.currentEpisode, totalProgress: viewModel.model.totalEpisodes)
             }
             
             HStack {
@@ -143,23 +132,28 @@ extension MediaDetailView {
                 } label: {
                     Image(systemName: "star.fill")
                     
-                    Text("#7 Highest Rated")
+                    Text("Ranked #7")
                 }
+                .background(Material.ultraThin)
                 .controlSize(.small)
                 .buttonStyle(.bordered)
-                .tint(.yellow)
+                .foregroundColor(.yellow)
+                .cornerRadius(15)
                 
                 Button {
-                    // Highest Ranked
+                    // Most Liked
                 } label: {
                     Image(systemName: "heart.fill")
                     
-                    Text(" #340 Most Popular")
+                    Text("Ranked #340")
                 }
-                .controlSize(.small)
+                .background(Material.ultraThin)
                 .buttonStyle(.bordered)
-                .tint(.pink)
+                .controlSize(.small)
+                .foregroundColor(.pink)
+                .cornerRadius(15)
             }
+            .padding([.horizontal, .bottom])
         }
         .padding()
     }
@@ -198,6 +192,7 @@ extension MediaDetailView {
             Text("Information")
                 .font(.title)
                 .bold()
+                .padding([.top, .horizontal])
             
             ScrollView(.horizontal) {
                 LazyHStack(alignment: .center, spacing: 16) {
@@ -292,9 +287,9 @@ extension MediaDetailView {
                             .font(.subheadline)
                     }
                 }
+                .padding([.horizontal, .bottom])
             }
         }
-        .padding()
     }
     
     // MARK: Relations
@@ -303,34 +298,18 @@ extension MediaDetailView {
             Text("Relations")
                 .font(.title)
                 .bold()
+                .padding([.top, .horizontal])
             
             ScrollView(.horizontal) {
-                LazyHStack(spacing: 16) {
-                    MediaCardView(size: .medium)
-                    MediaCardView(size: .medium)
-                    MediaCardView(size: .medium)
+                LazyHStack(alignment: .top, spacing: 16) {
+                    MediaCardView(type: .medium, text: "3-gatsu no Lion")
+                    MediaCardView(type: .medium, text: "3-gatsu no Lion")
+                    MediaCardView(type: .medium, text: "3-gatsu no Lion Finale")
+                    MediaCardView(type: .medium, text: "I AM STANDING")
                 }
+                .padding([.horizontal, .bottom])
             }
         }
-        .padding()
-    }
-    
-    // MARK: Staff
-    var staff: some View {
-        VStack(alignment: .leading) {
-            Text("Staff")
-                .font(.title)
-                .bold()
-            
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: 16) {
-                    MediaCardView(size: .small)
-                    MediaCardView(size: .small)
-                    MediaCardView(size: .small)
-                }
-            }
-        }
-        .padding()
     }
     
     // MARK: Characters
@@ -339,16 +318,61 @@ extension MediaDetailView {
             Text("Characters")
                 .font(.title)
                 .bold()
+                .padding([.top, .horizontal])
+            
+            ScrollView(.horizontal) {
+                LazyHStack(alignment: .top, spacing: 16) {
+                    MediaCardView(type: .small, text: "Rei Kiriyama")
+                    MediaCardView(type: .small, text: "Hinata Kawamoto")
+                    MediaCardView(type: .small, text: "Akari Kawamoto")
+                    MediaCardView(type: .small, text: "Momo Kawamoto")
+                    MediaCardView(type: .small, text: "Touji Souya")
+                    MediaCardView(type: .small, text: "Masachika Kouda")
+                }
+                .padding([.horizontal, .bottom])
+            }
+        }
+    }
+    
+    // MARK: Staff
+    var staff: some View {
+        VStack(alignment: .leading) {
+            Text("Staff")
+                .font(.title)
+                .bold()
+                .padding([.top, .horizontal])
             
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 16) {
-                    MediaCardView(size: .small)
-                    MediaCardView(size: .small)
-                    MediaCardView(size: .small)
+                    MediaCardView(type: .small, text: "Chica Umino")
+                    MediaCardView(type: .small, text: "Akiyuki Shinbou")
+                    MediaCardView(type: .small, text: "Kenjirou Okada")
                 }
+                .padding([.horizontal, .bottom])
             }
         }
-        .padding()
+    }
+    
+    var trailer: some View {
+        VStack(alignment: .leading) {
+            Text("Trailer")
+                .font(.title)
+                .bold()
+                .padding([.top, .horizontal])
+            
+            YouTubePlayerView(self.youTubePlayer) { state in
+                switch state {
+                case .idle:
+                    ProgressView()
+                case .ready:
+                    EmptyView()
+                case .error(let error):
+                    Text(error.localizedDescription)
+                }
+            }
+            .frame(height: imageSize.width * 9 / 16)
+            .padding(.bottom)
+        }
     }
     
     // MARK: External Links
@@ -357,6 +381,7 @@ extension MediaDetailView {
             Text("External links")
                 .font(.title)
                 .bold()
+                .padding([.top, .horizontal])
             
             ScrollView(.horizontal) {
                 LazyHStack(alignment: .center, spacing: 16) {
@@ -408,9 +433,9 @@ extension MediaDetailView {
                         }
                     }
                 }
+                .padding([.horizontal, .bottom])
             }
         }
-        .padding()
     }
     
     // MARK: Reviews
@@ -438,6 +463,27 @@ extension MediaDetailView {
             }
         }
         .padding()
+    }
+    
+    // MARK: Recommendations
+    var recommendations: some View {
+        VStack(alignment: .leading) {
+            Text("Recommendations")
+                .font(.title)
+                .bold()
+                .padding([.top, .horizontal])
+            
+            ScrollView(.horizontal) {
+                LazyHStack(alignment: .top, spacing: 16) {
+                    MediaCardView(type: .medium, text: "Koe no Katachi")
+                    MediaCardView(type: .medium, text: "Shigatsu wa Kimi no Uso")
+                    MediaCardView(type: .medium, text: "Chihayafuru")
+                    MediaCardView(type: .medium, text: "Ping Pong THE ANIMATION")
+                    MediaCardView(type: .medium, text: "Fruits Basket 1st Season")
+                }
+                .padding([.horizontal, .bottom])
+            }
+        }
     }
 }
 

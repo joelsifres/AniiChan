@@ -10,6 +10,8 @@ import SwiftUI
 struct MediaListView: View {
     @ObservedObject var viewModel: MediaListViewModel
     
+    @State var isPresented: Bool = false
+    
     var body: some View {
         NavigationView {
             VStack {
@@ -35,7 +37,7 @@ struct MediaListView: View {
                                         }
                                         .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                                             Button {
-                                                // Open PopOver
+                                                self.isPresented.toggle()
                                             } label: {
                                                 Image(systemName: "square.and.pencil.circle.fill")
                                             }
@@ -50,6 +52,7 @@ struct MediaListView: View {
             .navigationTitle("Kipik's Anime List")
             .toolbar {
                 Button {
+                    
                 } label: {
                     Image(systemName: "line.2.horizontal.decrease.circle")
                 }
@@ -58,6 +61,9 @@ struct MediaListView: View {
                 } label: {
                     Image(systemName: "arrow.up.arrow.down.circle")
                 }
+            }
+            .sheet(isPresented: $isPresented) {
+                ListEditorView()
             }
         }
     }

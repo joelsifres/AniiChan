@@ -39,9 +39,10 @@ struct MediaDetailView: View {
                     LinearGradient(gradient: Gradient(colors: [.clear, .clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
                 )
                 
-                VStack(spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
                     synopsis
                     information
+                    tags
                     relations
                     characters
                     staff
@@ -80,7 +81,7 @@ struct MediaDetailView: View {
             }
         }
         .sheet(isPresented: $isPresented) {
-            ListEditorView()
+            ListEntryEditorView(viewModel: ListEntryEditorViewModel())
         }
     }
 }
@@ -105,7 +106,10 @@ extension MediaDetailView {
                         self.imageSize = imageSize
                     }
             case .failure, .empty:
-                EmptyView()
+                Spacer()
+                    .readSize { _ in
+                        self.imageSize = CGSize(width: 700, height: 400)
+                    }
             @unknown default:
                 EmptyView()
             }
@@ -287,9 +291,24 @@ extension MediaDetailView {
                             .font(.subheadline)
                     }
                 }
-                .padding([.horizontal, .bottom])
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
+            .safeAreaPadding(.horizontal)
+            .padding(.bottom)
         }
+    }
+    
+    // MARK: Tags
+    var tags: some View {
+        VStack(alignment: .leading) {
+            Text("Tags")
+                .font(.title)
+                .bold()
+            
+            TagContainerView(tags: viewModel.model.tags)
+        }
+        .padding()
     }
     
     // MARK: Relations
@@ -307,8 +326,11 @@ extension MediaDetailView {
                     MediaCardView(type: .medium, text: "3-gatsu no Lion Finale")
                     MediaCardView(type: .medium, text: "I AM STANDING")
                 }
-                .padding([.horizontal, .bottom])
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
+            .safeAreaPadding(.horizontal)
+            .scrollIndicators(.hidden)
         }
     }
     
@@ -329,8 +351,11 @@ extension MediaDetailView {
                     MediaCardView(type: .small, text: "Touji Souya")
                     MediaCardView(type: .small, text: "Masachika Kouda")
                 }
-                .padding([.horizontal, .bottom])
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
+            .safeAreaPadding(.horizontal)
+            .scrollIndicators(.hidden)
         }
     }
     
@@ -348,8 +373,11 @@ extension MediaDetailView {
                     MediaCardView(type: .small, text: "Akiyuki Shinbou")
                     MediaCardView(type: .small, text: "Kenjirou Okada")
                 }
-                .padding([.horizontal, .bottom])
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
+            .safeAreaPadding(.horizontal)
+            .scrollIndicators(.hidden)
         }
     }
     
@@ -433,33 +461,35 @@ extension MediaDetailView {
                         }
                     }
                 }
-                .padding([.horizontal, .bottom])
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
+            .safeAreaPadding(.horizontal)
+            .scrollIndicators(.hidden)
         }
     }
     
     // MARK: Reviews
     var reviews: some View {
         VStack(alignment: .leading) {
-            Text("Reviews")
-                .font(.title)
-                .bold()
-            
-            VStack(spacing: 16) {
-                ReviewCondensedView()
-                ReviewCondensedView()
-                ReviewCondensedView()
-            }
-            
-            HStack {
+            HStack(alignment: .bottom) {
+                Text("Reviews")
+                    .font(.title)
+                    .bold()
+                
                 Spacer()
                 
                 NavigationLink {
                     ReviewListView()
                 } label: {
                     Text("More reviews")
-                    Image(systemName: "chevron.right")
                 }
+            }
+            
+            VStack(spacing: 16) {
+                ReviewCondensedView()
+                ReviewCondensedView()
+                ReviewCondensedView()
             }
         }
         .padding()
@@ -481,8 +511,11 @@ extension MediaDetailView {
                     MediaCardView(type: .medium, text: "Ping Pong THE ANIMATION")
                     MediaCardView(type: .medium, text: "Fruits Basket 1st Season")
                 }
-                .padding([.horizontal, .bottom])
+                .scrollTargetLayout()
             }
+            .scrollTargetBehavior(.viewAligned)
+            .safeAreaPadding(.horizontal)
+            .scrollIndicators(.hidden)
         }
     }
 }

@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Observation
 
 struct MediaListView: View {
-    @ObservedObject var viewModel: MediaListViewModel
+    @Bindable var viewModel: MediaListViewModel
     
     @State var isPresented: Bool = false
     
@@ -18,15 +19,12 @@ struct MediaListView: View {
                 List {
                     ForEach(MediaListItemModel.MediaItemState.allCases) { state in
                         Section(state.rawValue) {
-                            ForEach($viewModel.userAnimeList.filter { $0.wrappedValue.state == state }.sorted(by: { $0.wrappedValue.name < $1.wrappedValue.name
-                            })) { $entry in
-                                // Have the MediaRowView as a navigation link to the anime detail instead of as an expandable view
+                            ForEach($viewModel.selectedList.filter { $0.wrappedValue.state == state }) { $entry in
                                 NavigationLink {
                                     MediaDetailView(viewModel: MediaDetailViewModel())
                                 } label: {
-                                    MediaRowView(model: $entry)
+                                    ListMediaRowView(model: $entry)
                                         .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                            // Disable swipe action if row is expanded?
                                             Button {
                                                 entry.increaseCurrentEpisode()
                                             } label: {
@@ -49,21 +47,50 @@ struct MediaListView: View {
                     }
                 }
             }
-            .navigationTitle("Kipik's Anime List")
+            .navigationTitle("Kipik's \(viewModel.selectedPage == .anime ? "Anime" : "Manga") List")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar(.visible, for: .navigationBar)
             .toolbar {
-                Button {
-                    
-                } label: {
-                    Image(systemName: "line.2.horizontal.decrease.circle")
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        viewModel.toggleOrder()
+                    } label: {
+                        Image(systemName: viewModel.currentSortingFilterOrder == .ascending ? "arrow.up" : "arrow.down")
+                    }
                 }
-                Button {
-
-                } label: {
-                    Image(systemName: "arrow.up.arrow.down.circle")
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    Menu {
+                        ForEach(MediaListViewModel.SortingFilter.allCases) { filter in
+                            Button {
+                                viewModel.sort(by: filter)
+                            } label: {
+                                Text(filter.stringValue)
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "line.3.horizontal")
+                    }
                 }
             }
+            .toolbarTitleMenu {
+                Button {
+                    viewModel.setSelectedPage(to: .anime)
+                } label: {
+                    Text("Anime")
+                    Image(systemName: "play.rectangle")
+                }
+                
+                Button {
+                    viewModel.setSelectedPage(to: .manga)
+                } label: {
+                    Text("Manga")
+                    Image(systemName: "book")
+                }
+            }
+            .searchable(text: $viewModel.searchWord, prompt: "Search Kipik's List")
             .sheet(isPresented: $isPresented) {
-                ListEditorView()
+                ListEntryEditorView(viewModel: ListEntryEditorViewModel())
             }
         }
     }
@@ -74,40 +101,88 @@ struct MediaListView_Previews: PreviewProvider {
     static let viewModel = MediaListViewModel(
         userAnimeLists: [
             MediaListItemModel(
-                name: "Neon Genesis Evangelion",
+                name: "Cardcaptor Sakura",
                 state: .watching,
-                currentEpisode: 0,
-                totalEpisodes: 12
+                currentEpisode: 13,
+                totalEpisodes: 70,
+                score: 0
+            ),
+            MediaListItemModel(
+                name: "Cowboy Bebop",
+                state: .completed,
+                currentEpisode: 26,
+                totalEpisodes: 26,
+                score: 8
             ),
             MediaListItemModel(
                 name: "Neon Genesis Evangelion",
-                state: .watching,
-                currentEpisode: 0,
-                totalEpisodes: 12
+                state: .completed,
+                currentEpisode: 26,
+                totalEpisodes: 26,
+                score: 8
+            ),
+            MediaListItemModel(
+                name: "Aku no Hana",
+                state: .completed,
+                currentEpisode: 13,
+                totalEpisodes: 13,
+                score: 10
+            ),
+            MediaListItemModel(
+                name: "Mousou Dairinin",
+                state: .completed,
+                currentEpisode: 13,
+                totalEpisodes: 13,
+                score: 6
             ),
             MediaListItemModel(
                 name: "The Wind Rises",
                 state: .completed,
                 currentEpisode: 1,
-                totalEpisodes: 1
+                totalEpisodes: 1,
+                score: 10
+            ),
+            MediaListItemModel(
+                name: "Tsuritama",
+                state: .completed,
+                currentEpisode: 12,
+                totalEpisodes: 12,
+                score: 8
             ),
             MediaListItemModel(
                 name: "Uchoten Kazoku",
                 state: .onHold,
                 currentEpisode: 11,
-                totalEpisodes: 13
+                totalEpisodes: 13,
+                score: 6
             ),
             MediaListItemModel(
-                name: "Neon Genesis Evangelion",
+                name: "Chainsaw Man",
                 state: .dropped,
                 currentEpisode: 1,
-                totalEpisodes: 25
+                totalEpisodes: 25,
+                score: 2
             ),
             MediaListItemModel(
-                name: "Neon Genesis Evangelion",
+                name: "Akagge no Anne",
                 state: .planToWatch,
-                currentEpisode: 1,
-                totalEpisodes: 25
+                currentEpisode: 0,
+                totalEpisodes: 50,
+                score: 0
+            ),
+            MediaListItemModel(
+                name: "ARIA the AVVENIRE",
+                state: .planToWatch,
+                currentEpisode: 0,
+                totalEpisodes: 3,
+                score: 0
+            ),
+            MediaListItemModel(
+                name: "Bartender",
+                state: .planToWatch,
+                currentEpisode: 0,
+                totalEpisodes: 11,
+                score: 0
             )
         ],
         userMangaList: []

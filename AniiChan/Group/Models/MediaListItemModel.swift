@@ -26,6 +26,7 @@ struct MediaListItemModel: Identifiable {
     var state: MediaItemState
     var currentEpisode: Int
     var totalEpisodes: Int
+    var score: Double
 
     mutating func increaseCurrentEpisode() {
         guard state == .watching else { return }

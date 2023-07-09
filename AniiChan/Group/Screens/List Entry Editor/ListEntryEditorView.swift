@@ -1,13 +1,17 @@
 //
-//  ListEditorView.swift
+//  ListEntryEditorView.swift
 //  AniiChan
 //
 //  Created by Joel Sifres Clemente on 23/6/23.
 //
 
 import SwiftUI
+import Observation
 
-struct ListEditorView: View {
+struct ListEntryEditorView: View {
+    
+    @Bindable var viewModel: ListEntryEditorViewModel
+    
     var body: some View {
         NavigationView {
             List {
@@ -16,7 +20,7 @@ struct ListEditorView: View {
                     
                     Spacer()
                     
-                    MediaStateView(state: .constant(.completed))
+                    MediaStateView(state: $viewModel.entry.state)
                 }
                 
                 HStack {
@@ -28,14 +32,14 @@ struct ListEditorView: View {
                 }
                 
                 HStack {
-                    MediaProgressView(progress: .constant(8), totalProgress: 12)
+                    MediaProgressView(progress: $viewModel.entry.currentEpisode, totalProgress: viewModel.entry.totalEpisodes)
                 }
                 
-                DatePicker("Start Date", selection: .constant(Date()), displayedComponents: .date)
+                DatePicker("Start Date", selection: $viewModel.entry.startDate, displayedComponents: .date)
                     .datePickerStyle(.compact)
                 
                 
-                DatePicker("Finish Date", selection: .constant(Date()), displayedComponents: .date)
+                DatePicker("Finish Date", selection: $viewModel.entry.endDate, displayedComponents: .date)
                     .datePickerStyle(.compact)
                 
                 HStack {
@@ -44,15 +48,15 @@ struct ListEditorView: View {
                     Spacer()
                     
                     Button {
-                        
+                        viewModel.entry.rewatches -= 1
                     } label: {
                         Image(systemName: "minus")
                     }
                     
-                    Text("0")
+                    Text("\(viewModel.entry.rewatches)")
                     
                     Button {
-                        
+                        viewModel.entry.rewatches += 1
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -61,14 +65,15 @@ struct ListEditorView: View {
                 VStack(alignment: .leading) {
                     Text("Notes")
                     
-                    TextEditor(text: .constant("Asdfasdfasdfas"))
+                    TextEditor(text: $viewModel.entry.notes)
                         .padding(4)
                         .frame(height: 200)
                         .border(Color.systemGroupedBackground)
                         .cornerRadius(5)
                 }
             }
-            .navigationTitle("3-gatsu no Lion 2")
+            .buttonStyle(.plain)
+            .navigationTitle(viewModel.entry.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 Button {
@@ -82,8 +87,8 @@ struct ListEditorView: View {
     }
 }
 
-struct ListEditorView_Previews: PreviewProvider {
+struct ListEntryEditorView_Previews: PreviewProvider {
     static var previews: some View {
-        ListEditorView()
+        ListEntryEditorView(viewModel: ListEntryEditorViewModel())
     }
 }

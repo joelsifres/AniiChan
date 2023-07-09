@@ -74,20 +74,7 @@ extension MediaCardView {
     // MARK: Small Size
     private var smallSizeCard: some View {
         HStack(spacing: 0) {
-            AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg")) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .clipped()
-                        .frame(width: type.cgSize.width, height: type.cgSize.height)
-                case .failure, .empty:
-                    EmptyView()
-                @unknown default:
-                    EmptyView()
-                }
-            }
+            AsyncMediaImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg"), size: type.cgSize)
             .clipped()
             
             VStack(alignment: .leading) {
@@ -111,20 +98,7 @@ extension MediaCardView {
     // MARK: Medium Size
     private var mediumSizeCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            AsyncImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg")) { phase in
-                switch phase {
-                case .success(let image):
-                    image
-                        .resizable()
-                        .scaledToFill()
-                        .clipped()
-                        .frame(width: type.cgSize.width, height: type.cgSize.height)
-                case .failure, .empty:
-                    EmptyView()
-                @unknown default:
-                    EmptyView()
-                }
-            }
+            AsyncMediaImage(url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg"), size: type.cgSize)
             .clipped()
             
             VStack(alignment: .leading) {
@@ -133,7 +107,7 @@ extension MediaCardView {
                     .foregroundColor(.blue)
                 
                 Text(text)
-                    .lineLimit(3, reservesSpace: true)
+                    .lineLimit(2, reservesSpace: true)
                     .fixedSize(horizontal: false, vertical: true)
                 
                 Text("Manga · Releasing")

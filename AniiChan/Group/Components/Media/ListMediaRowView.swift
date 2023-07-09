@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MediaRowView: View {
+struct ListMediaRowView: View {
     @Binding var model: MediaListItemModel
 
     var body: some View {
@@ -19,8 +19,13 @@ struct MediaRowView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(width: 60, height: 60)
-                case .failure, .empty:
-                    EmptyView()
+                case .failure:
+                    Image(systemName: "photo")
+                        .frame(width: 60, height: 60)
+                        .foregroundColor(.gray)
+                case .empty:
+                    ProgressView()
+                        .frame(width: 60, height: 60)
                 @unknown default:
                     EmptyView()
                 }
@@ -77,61 +82,66 @@ struct RatingView: View {
     }
 }
 
-struct MediaRowView_Previews: PreviewProvider {
+struct ListMediaRowView_Previews: PreviewProvider {
     
     static var previews: some View {
         List {
-            MediaRowView(
+            ListMediaRowView(
                 model: .constant(
                     MediaListItemModel(
                         name: "Name",
                         state: .watching,
                         currentEpisode: 1,
-                        totalEpisodes: 12
+                        totalEpisodes: 12,
+                        score: 8
                     )
                 )
             )
             
-            MediaRowView(
+            ListMediaRowView(
                 model: .constant(
                     MediaListItemModel(
                         name: "Name",
                         state: .completed,
                         currentEpisode: 12,
-                        totalEpisodes: 12
+                        totalEpisodes: 12,
+                        score: 8
                     )
                 )
             )
             
-            MediaRowView(
+            ListMediaRowView(
                 model: .constant(
                     MediaListItemModel(
                         name: "Name",
                         state: .onHold,
                         currentEpisode: 4,
-                        totalEpisodes: 12
+                        totalEpisodes: 12,
+                        score: 8
                     )
                 )
             )
             
-            MediaRowView(
+            ListMediaRowView(
                 model: .constant(
                     MediaListItemModel(
                         name: "Name",
                         state: .planToWatch,
                         currentEpisode: 0,
-                        totalEpisodes: 12
+                        totalEpisodes: 12,
+                        score: 8
                     )
                 )
             )
             
-            MediaRowView(
+            ListMediaRowView(
                 model: .constant(
                     MediaListItemModel(
                         name: "Name",
                         state: .dropped,
                         currentEpisode: 4,
-                        totalEpisodes: 12
+                        totalEpisodes: 12,
+                        score: 8
                     )
                 )
             )

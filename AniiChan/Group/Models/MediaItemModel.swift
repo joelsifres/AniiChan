@@ -99,6 +99,12 @@ struct MediaItemModel: Identifiable {
     var state: AnimeMediaState
     var currentEpisode: Int
     var totalEpisodes: Int
+    var startDate: Date
+    var endDate: Date
+    var rewatches: Int
+    var notes: String
+    var tags: [Tag] = []
+    
     var imageURLString: String
 
     mutating func increaseCurrentEpisode() {

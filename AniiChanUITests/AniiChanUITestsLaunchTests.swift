@@ -1,13 +1,13 @@
 //
-//  AniListNativeUITestsLaunchTests.swift
-//  AniListNativeUITests
+//  AniiChanUITestsLaunchTests.swift
+//  AniiChanUITests
 //
-//  Created by Joel Sifres on 27/5/23.
+//  Created by Joel Sifres Clemente on 15/6/23.
 //
 
 import XCTest
 
-final class AniListNativeUITestsLaunchTests: XCTestCase {
+final class AniiChanUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

@@ -1,13 +1,13 @@
 //
-//  AniListNativeUITests.swift
-//  AniListNativeUITests
+//  AniiChanUITests.swift
+//  AniiChanUITests
 //
-//  Created by Joel Sifres on 27/5/23.
+//  Created by Joel Sifres Clemente on 15/6/23.
 //
 
 import XCTest
 
-final class AniListNativeUITests: XCTestCase {
+final class AniiChanUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

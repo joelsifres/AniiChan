@@ -10,66 +10,70 @@ import Observation
 
 struct ListEntryEditorView: View {
     
-    @Bindable var viewModel: ListEntryEditorViewModel
+    @ObservedObject var viewModel: ListEntryEditorViewModel
     
     var body: some View {
         NavigationView {
-            List {
-                HStack {
-                    Text("Status")
-                    
-                    Spacer()
-                    
-                    MediaStateView(state: $viewModel.entry.state)
-                }
-                
-                HStack {
-                    Text("Score")
-                    
-                    Spacer()
-                    
-                    RatingStarView(viewModel: RatingStarViewModel(rating: 3.5))
-                }
-                
-                HStack {
-                    MediaProgressView(progress: $viewModel.entry.currentEpisode, totalProgress: viewModel.entry.totalEpisodes)
-                }
-                
-                DatePicker("Start Date", selection: $viewModel.entry.startDate, displayedComponents: .date)
-                    .datePickerStyle(.compact)
-                
-                
-                DatePicker("Finish Date", selection: $viewModel.entry.endDate, displayedComponents: .date)
-                    .datePickerStyle(.compact)
-                
-                HStack {
-                    Text("Total Rewatches")
-                    
-                    Spacer()
-                    
-                    Button {
-                        viewModel.entry.rewatches -= 1
-                    } label: {
-                        Image(systemName: "minus")
+            Form {
+                Section {
+                    HStack {
+                        Text("Status")
+                        
+                        Spacer()
+                        
+                        MediaStateView(state: $viewModel.entry.state)
                     }
                     
-                    Text("\(viewModel.entry.rewatches)")
+                    HStack {
+                        Text("Score")
+                        
+                        Spacer()
+                        
+                        RatingStarView(viewModel: RatingStarViewModel(rating: 3.5))
+                    }
                     
-                    Button {
-                        viewModel.entry.rewatches += 1
-                    } label: {
-                        Image(systemName: "plus")
+                    HStack {
+                        MediaProgressView(progress: $viewModel.entry.currentEpisode, totalProgress: viewModel.entry.totalEpisodes)
+                    }
+                    
+                    DatePicker("Start Date", selection: $viewModel.entry.startDate, displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                    
+                    
+                    DatePicker("Finish Date", selection: $viewModel.entry.endDate, displayedComponents: .date)
+                        .datePickerStyle(.compact)
+                    
+                    HStack {
+                        Text("Total Rewatches")
+                        
+                        Spacer()
+                        
+                        Button {
+                            viewModel.entry.rewatches -= 1
+                        } label: {
+                            Image(systemName: "minus")
+                        }
+                        
+                        Text("\(viewModel.entry.rewatches)")
+                        
+                        Button {
+                            viewModel.entry.rewatches += 1
+                        } label: {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
                 
-                VStack(alignment: .leading) {
-                    Text("Notes")
-                    
-                    TextEditor(text: $viewModel.entry.notes)
-                        .padding(4)
-                        .frame(height: 200)
-                        .border(Color.systemGroupedBackground)
-                        .cornerRadius(5)
+                Section {
+                    VStack(alignment: .leading) {
+                        Text("Notes")
+                        
+                        TextEditor(text: $viewModel.entry.notes)
+                            .padding(4)
+                            .frame(height: 200)
+                            .border(Color.systemGroupedBackground)
+                            .cornerRadius(5)
+                    }
                 }
             }
             .buttonStyle(.plain)

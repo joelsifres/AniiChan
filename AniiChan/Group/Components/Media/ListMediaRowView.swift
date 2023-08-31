@@ -46,7 +46,9 @@ struct ListMediaRowView: View {
                     
                     Spacer()
                     
-                    RatingView(score: 4.5)
+                    if model.state != .planToWatch {
+                        RatingView(score: model.score / 2)
+                    }
                 }
                 .foregroundColor(.gray)
                 .font(.subheadline)

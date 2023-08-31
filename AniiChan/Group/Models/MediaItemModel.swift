@@ -15,7 +15,13 @@ protocol IterableEnum: CaseIterable, Identifiable {
 struct MediaItemModel: Identifiable {
     enum AnimeMediaState: String, CaseIterable, Identifiable {
         case watching = "Watching"
-        case completed = "Completed"
+        case completedTV = "Completed TV"
+        case completedMovie = "Completed Movie"
+        case completedOVA = "Completed OVA"
+        case completedONA = "Completed ONA"
+        case completedTVShort = "Completed TV Short"
+        case completedSpecial = "Completed Special"
+        case completedMusic = "Completed Music"
         case onHold = "On hold"
         case dropped = "Dropped"
         case planToWatch = "Plan to Watch"
@@ -29,10 +35,11 @@ struct MediaItemModel: Identifiable {
     // Maybe if only the first is different we don't need two enums
     enum MangaMediaState: String, CaseIterable, Identifiable {
         case reading = "Watching"
-        case completed = "Completed"
-        case onHold = "On hold"
+        case completedManga = "Completed Manga"
+        case completedOneShot = "Completed One Shot"
+        case paused = "Paused"
         case dropped = "Dropped"
-        case planToWatch = "Plan to Watch"
+        case planning = "Planning"
         case addToList = "Add to List"
         
         var id: String {
@@ -113,7 +120,13 @@ struct MediaItemModel: Identifiable {
         currentEpisode = currentEpisode + 1
 
         if currentEpisode == totalEpisodes {
-            state = .completed
+            state = .completedTV
         }
+    }
+}
+
+extension MediaItemModel: Equatable {
+    static func == (lhs: MediaItemModel, rhs: MediaItemModel) -> Bool {
+        lhs.id == rhs.id
     }
 }

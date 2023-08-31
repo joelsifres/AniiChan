@@ -18,7 +18,7 @@ struct MediaListView: View {
             VStack {
                 List {
                     ForEach(MediaListItemModel.MediaItemState.allCases) { state in
-                        Section(state.rawValue) {
+                        Section {
                             ForEach($viewModel.selectedList.filter { $0.wrappedValue.state == state }) { $entry in
                                 NavigationLink {
                                     MediaDetailView(viewModel: MediaDetailViewModel())
@@ -42,6 +42,14 @@ struct MediaListView: View {
                                             .tint(.orange)
                                         }
                                 }
+                            }
+                        } header: {
+                            Text(state.rawValue)
+                        } footer: {
+                            HStack {
+                                Spacer()
+                                
+                                Text("\($viewModel.selectedList.filter { $0.wrappedValue.state == state }.count) entries")
                             }
                         }
                     }

@@ -37,7 +37,7 @@ struct ExploreContentView: View {
             }
         } else {
             ExploreSearchView(
-                viewModel: ExploreSearchViewModel(searchWord: $viewModel.searchWord)
+                viewModel: ExploreSearchViewModel()
             )
         }
     }

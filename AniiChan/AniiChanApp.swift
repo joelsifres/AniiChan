@@ -99,9 +99,9 @@ struct AniiChanApp: App {
                         Label("Explore", systemImage: "magnifyingglass")
                     }
                 
-                Text("Settings")
+                ProfileView()
                     .tabItem {
-                        Label("Settings", systemImage: "gear")
+                        Label("Profile", systemImage: "person.fill")
                     }
             }
         }

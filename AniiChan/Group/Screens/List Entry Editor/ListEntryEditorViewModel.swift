@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-@Observable final class ListEntryEditorViewModel {
+final class ListEntryEditorViewModel: ObservableObject {
     var entry: MediaItemModel = MediaItemModel(name: "Neon Genesis Evangelion",
                                                state: .planToWatch,
                                                currentEpisode: 0,

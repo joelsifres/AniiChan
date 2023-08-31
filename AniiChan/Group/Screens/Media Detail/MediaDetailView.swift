@@ -7,6 +7,31 @@
 
 import SwiftUI
 import YouTubePlayerKit
+import ComposableArchitecture
+
+struct MediaListFeature: Reducer {
+    struct State: Equatable {
+        // Media Object
+        var media: MediaItemModel
+    }
+    
+    enum Action {
+        case shareMediaEntryTapped
+        case editUserMediaEntryTapped
+    }
+    
+    var body: some ReducerOf<Self> {
+        Reduce { state, action in
+            switch action {
+            case .shareMediaEntryTapped:
+                return .none
+            case .editUserMediaEntryTapped:
+                // Open ListEntryEditor
+                return .none
+            }
+        }
+    }
+}
 
 struct MediaDetailView: View {
     
@@ -14,7 +39,8 @@ struct MediaDetailView: View {
         case scrollView
     }
     
-    @ObservedObject var viewModel: MediaDetailViewModel
+    let store: StoreOf<MediaListFeature>
+    
     @State private var imageSize = CGSize()
     @State var isSynopsisExpanded: Bool = false
     @State var showToolBar = false
@@ -24,64 +50,66 @@ struct MediaDetailView: View {
     
     // MARK: Body
     var body: some View {
-        OffsettableScrollView { offset in
-            if imageSize.height > 0 {
-                showToolBar = offset.y < -imageSize.height
+        WithViewStore(self.store, observe: { $0 }) { viewStore in
+            OffsettableScrollView { offset in
+                if imageSize.height > 0 {
+                    showToolBar = offset.y < -imageSize.height
+                }
+            } content: {
+                LazyVStack(alignment: .leading, spacing: 0) {
+                    ZStack {
+                        Spacer()
+                            .frame(height: imageSize.height)
+                        headerContent
+                    }
+                    .background(
+                        LinearGradient(gradient: Gradient(colors: [.clear, .clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
+                    )
+                    
+                    VStack(alignment: .leading, spacing: 0) {
+                        synopsis
+                        information
+                        tags
+                        relations
+                        characters
+                        staff
+                        trailer
+                        externalLinks
+                        reviews
+                        recommendations
+                    }
+                    .background(Color.systemBackground)
+                }
+                .padding(.bottom, 16)
             }
-        } content: {
-            LazyVStack(alignment: .leading, spacing: 0) {
-                ZStack {
+            .background {
+                VStack {
+                    headerImage
+                        .scaledToFit()
                     Spacer()
-                        .frame(height: imageSize.height)
-                    headerContent
                 }
-                .background(
-                    LinearGradient(gradient: Gradient(colors: [.clear, .clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
-                )
-                
-                VStack(alignment: .leading, spacing: 0) {
-                    synopsis
-                    information
-                    tags
-                    relations
-                    characters
-                    staff
-                    trailer
-                    externalLinks
-                    reviews
-                    recommendations
+            }
+            .coordinateSpace(name: CoordinateSpaces.scrollView)
+            .edgesIgnoringSafeArea(.top)
+            .navigationTitle(showToolBar ? "3-Gatsu no Lion 2" : "")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(showToolBar ? .visible : .hidden, for: .navigationBar)
+            .toolbar {
+                Button {
+                    
+                } label: {
+                    Image(systemName: "square.and.arrow.up")
                 }
-                .background(Color.systemBackground)
-            }
-            .padding(.bottom, 16)
-        }
-        .background {
-            VStack {
-                headerImage
-                    .scaledToFit()
-                Spacer()
-            }
-        }
-        .coordinateSpace(name: CoordinateSpaces.scrollView)
-        .edgesIgnoringSafeArea(.top)
-        .navigationTitle(showToolBar ? "3-Gatsu no Lion 2" : "")
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(showToolBar ? .visible : .hidden, for: .navigationBar)
-        .toolbar(showToolBar ? .visible : .hidden)
-        .toolbar {
-            Button {
                 
-            } label: {
-                Image(systemName: "square.and.arrow.up")
+                Button {
+                    self.isPresented.toggle()
+                } label: {
+                    Image(systemName: "square.and.pencil")
+                }
             }
-            Button {
-                self.isPresented.toggle()
-            } label: {
-                Image(systemName: "square.and.pencil")
+            .sheet(isPresented: $isPresented) {
+                ListEntryEditorView(viewModel: ListEntryEditorViewModel())
             }
-        }
-        .sheet(isPresented: $isPresented) {
-            ListEntryEditorView(viewModel: ListEntryEditorViewModel())
         }
     }
 }

@@ -9,37 +9,14 @@ import SwiftUI
 import YouTubePlayerKit
 import ComposableArchitecture
 
-struct MediaListFeature: Reducer {
-    struct State: Equatable {
-        // Media Object
-        var media: MediaItemModel
-    }
-    
-    enum Action {
-        case shareMediaEntryTapped
-        case editUserMediaEntryTapped
-    }
-    
-    var body: some ReducerOf<Self> {
-        Reduce { state, action in
-            switch action {
-            case .shareMediaEntryTapped:
-                return .none
-            case .editUserMediaEntryTapped:
-                // Open ListEntryEditor
-                return .none
-            }
-        }
-    }
-}
-
 struct MediaDetailView: View {
     
     private enum CoordinateSpaces {
         case scrollView
     }
     
-    let store: StoreOf<MediaListFeature>
+    @Bindable var store: StoreOf<MediaDetailFeature>
+    typealias MediaDetailStore = ViewStore<MediaDetailFeature.State, MediaDetailFeature.Action>
     
     @State private var imageSize = CGSize()
     @State var isSynopsisExpanded: Bool = false
@@ -50,76 +27,76 @@ struct MediaDetailView: View {
     
     // MARK: Body
     var body: some View {
-        WithViewStore(self.store, observe: { $0 }) { viewStore in
-            OffsettableScrollView { offset in
-                if imageSize.height > 0 {
-                    showToolBar = offset.y < -imageSize.height
-                }
-            } content: {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    ZStack {
-                        Spacer()
-                            .frame(height: imageSize.height)
-                        headerContent
-                    }
-                    .background(
-                        LinearGradient(gradient: Gradient(colors: [.clear, .clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
-                    )
-                    
-                    VStack(alignment: .leading, spacing: 0) {
-                        synopsis
-                        information
-                        tags
-                        relations
-                        characters
-                        staff
-                        trailer
-                        externalLinks
-                        reviews
-                        recommendations
-                    }
-                    .background(Color.systemBackground)
-                }
-                .padding(.bottom, 16)
+        OffsettableScrollView { offset in
+            if imageSize.height > 0 {
+                showToolBar = offset.y < -imageSize.height
             }
-            .background {
-                VStack {
-                    headerImage
-                        .scaledToFit()
+        } content: {
+            LazyVStack(alignment: .leading, spacing: 0) {
+                ZStack {
                     Spacer()
+                        .frame(height: imageSize.height)
+                    headerContent
                 }
+                .background(
+                    LinearGradient(gradient: Gradient(colors: [.clear, .clear, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom)
+                )
+                
+                VStack(alignment: .leading, spacing: 0) {
+                    synopsis
+                    information
+                    tags
+                    relations
+                    characters
+                    staff
+                    trailer
+                    externalLinks
+                    reviews
+                    recommendations
+                }
+                .background(Color.systemBackground)
             }
-            .coordinateSpace(name: CoordinateSpaces.scrollView)
-            .edgesIgnoringSafeArea(.top)
-            .navigationTitle(showToolBar ? "3-Gatsu no Lion 2" : "")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(showToolBar ? .visible : .hidden, for: .navigationBar)
-            .toolbar {
+            .padding(.bottom, 16)
+        }
+        .background {
+            VStack {
+                headerImage
+                    .scaledToFit()
+                Spacer()
+            }
+        }
+        .coordinateSpace(name: CoordinateSpaces.scrollView)
+        .edgesIgnoringSafeArea(.top)
+        .navigationTitle(showToolBar ? "3-Gatsu no Lion 2" : "")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(showToolBar ? .visible : .hidden, for: .navigationBar)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     
                 } label: {
-                    Image(systemName: "square.and.arrow.up")
+                    Image(systemName: "ellipsis")
                 }
-                
-                Button {
-                    self.isPresented.toggle()
-                } label: {
-                    Image(systemName: "square.and.pencil")
-                }
+                .buttonStyle(.borderless)
+                .background(Material.ultraThin)
+                .controlSize(.small)
+                .padding(8)
+                .clipShape(Circle())
+                .bold()
             }
-            .sheet(isPresented: $isPresented) {
-                ListEntryEditorView(viewModel: ListEntryEditorViewModel())
-            }
+        }
+        .sheet(isPresented: $isPresented) {
+            ListEntryEditorView(viewModel: ListEntryEditorViewModel())
         }
     }
 }
 
-extension MediaDetailView {
+fileprivate extension MediaDetailView {
     
     // MARK: Header
     var headerImage: some View {
         AsyncImage(
-            url: URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg")!
+            url: URL(string: store.media.imageURLString)!
         ) { phase in
             switch phase {
             case .success(let image):
@@ -149,13 +126,19 @@ extension MediaDetailView {
             Spacer()
             
             Text("3-Gatsu no Lion 2")
+                .font(.title)
                 .bold()
                 .foregroundColor(Color(UIColor.label))
             
             HStack {
-                MediaStateView(state: $viewModel.model.state)
+                MediaStateView(
+                    state: $store.media.state.sending(\.onStateChanged)
+                )
                 
-                MediaProgressView(progress: $viewModel.model.currentEpisode, totalProgress: viewModel.model.totalEpisodes)
+                MediaProgressView(
+                    progress: $store.media.currentEpisode.sending(\.onCurrentEpisodeChanged),
+                    totalProgress: store.media.totalEpisodes
+                )
             }
             
             HStack {
@@ -194,7 +177,7 @@ extension MediaDetailView {
     var synopsis: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Synopsis")
-                .font(.title)
+                .font(.title2)
                 .bold()
             
             Text(
@@ -222,7 +205,7 @@ extension MediaDetailView {
     var information: some View {
         VStack(alignment: .leading) {
             Text("Information")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .padding([.top, .horizontal])
             
@@ -324,6 +307,7 @@ extension MediaDetailView {
             .scrollTargetBehavior(.viewAligned)
             .safeAreaPadding(.horizontal)
             .padding(.bottom)
+            .scrollIndicators(.hidden)
         }
     }
     
@@ -331,10 +315,10 @@ extension MediaDetailView {
     var tags: some View {
         VStack(alignment: .leading) {
             Text("Tags")
-                .font(.title)
+                .font(.title2)
                 .bold()
             
-            TagContainerView(tags: viewModel.model.tags)
+            TagContainerView(tags: store.media.tags)
         }
         .padding()
     }
@@ -343,7 +327,7 @@ extension MediaDetailView {
     var relations: some View {
         VStack(alignment: .leading) {
             Text("Relations")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .padding([.top, .horizontal])
             
@@ -366,7 +350,7 @@ extension MediaDetailView {
     var characters: some View {
         VStack(alignment: .leading) {
             Text("Characters")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .padding([.top, .horizontal])
             
@@ -391,7 +375,7 @@ extension MediaDetailView {
     var staff: some View {
         VStack(alignment: .leading) {
             Text("Staff")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .padding([.top, .horizontal])
             
@@ -412,7 +396,7 @@ extension MediaDetailView {
     var trailer: some View {
         VStack(alignment: .leading) {
             Text("Trailer")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .padding([.top, .horizontal])
             
@@ -435,7 +419,7 @@ extension MediaDetailView {
     var externalLinks: some View {
         VStack(alignment: .leading) {
             Text("External links")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .padding([.top, .horizontal])
             
@@ -502,7 +486,7 @@ extension MediaDetailView {
         VStack(alignment: .leading) {
             HStack(alignment: .bottom) {
                 Text("Reviews")
-                    .font(.title)
+                    .font(.title2)
                     .bold()
                 
                 Spacer()
@@ -527,7 +511,7 @@ extension MediaDetailView {
     var recommendations: some View {
         VStack(alignment: .leading) {
             Text("Recommendations")
-                .font(.title)
+                .font(.title2)
                 .bold()
                 .padding([.top, .horizontal])
             
@@ -548,10 +532,17 @@ extension MediaDetailView {
     }
 }
 
-struct MediaDetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            MediaDetailView(viewModel: MediaDetailViewModel())
-        }
+#Preview("Media Detail View") {
+    NavigationView {
+        MediaDetailView(
+            store: Store(
+                initialState: MediaDetailFeature.State(
+                    media: MediaItemModel.mock
+                )
+            ) {
+                MediaDetailFeature()
+                    ._printChanges()
+            }
+        )
     }
 }

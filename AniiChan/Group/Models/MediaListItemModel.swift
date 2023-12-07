@@ -7,36 +7,19 @@
 
 import Foundation
 
-struct MediaListItemModel: Identifiable {
-    enum MediaItemState: String, CaseIterable, Identifiable {
-        case watching = "Watching"
-        case completed = "Completed"
-        case onHold = "On hold"
-        case dropped = "Dropped"
-        case planToWatch = "Plan to Watch"
-        
-        var id: String {
-            self.rawValue
-        }
-    }
+struct MediaListItemModel: Identifiable, Equatable {
     
     let id = UUID()
     
     var name: String
-    var state: MediaItemState
+    var state: MediaState
     var currentEpisode: Int
     var totalEpisodes: Int
-    var score: Double
-
-    mutating func increaseCurrentEpisode() {
-        guard state == .watching else { return }
-
-        currentEpisode = currentEpisode + 1
-
-        if currentEpisode == totalEpisodes {
-            state = .completed
-        }
-    }
+    var userScore: Double
+    
+    var releaseDate: Date = Date()
+    var lastUpdated: Date = Date()
+    var lastAdded: Date = Date()
 }
 
 extension MediaListItemModel {

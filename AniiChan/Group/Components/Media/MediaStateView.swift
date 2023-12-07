@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct MediaStateView: View {
-    @Binding var state: MediaItemModel.AnimeMediaState
+    @Binding var state: MediaState
     
     var body: some View {
         Menu {
-            ForEach(MediaItemModel.AnimeMediaState.allCases) { state in
+            ForEach(MediaState.allCases) { state in
                 Button {
                     self.state = state
                 } label: {
-                    Text(state.rawValue)
+                    Text(state.stringValue(for: .anime))
                 }
             }
         } label: {
-            Text(state.rawValue)
+            Text(state.stringValue(for: .anime))
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+            
             Image(systemName: "chevron.down")
         }
         .background(Material.ultraThin)
@@ -28,8 +31,6 @@ struct MediaStateView: View {
     }
 }
 
-struct MediaStateView_Previews: PreviewProvider {
-    static var previews: some View {
-        MediaStateView(state: .constant(.addToList))
-    }
+#Preview {
+    MediaStateView(state: .constant(.completed))
 }

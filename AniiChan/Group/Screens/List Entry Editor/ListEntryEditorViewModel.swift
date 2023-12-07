@@ -10,7 +10,7 @@ import Observation
 
 final class ListEntryEditorViewModel: ObservableObject {
     var entry: MediaItemModel = MediaItemModel(name: "Neon Genesis Evangelion",
-                                               state: .planToWatch,
+                                               state: .planning,
                                                currentEpisode: 0,
                                                totalEpisodes: 24,
                                                startDate: Date(),

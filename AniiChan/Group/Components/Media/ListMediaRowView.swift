@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListMediaRowView: View {
-    @Binding var model: MediaListItemModel
+    var model: MediaListItemModel
 
     var body: some View {
         HStack {
@@ -46,8 +46,8 @@ struct ListMediaRowView: View {
                     
                     Spacer()
                     
-                    if model.state != .planToWatch {
-                        RatingView(score: model.score / 2)
+                    if model.state != .planning {
+                        RatingView(score: model.userScore / 2)
                     }
                 }
                 .foregroundColor(.gray)
@@ -56,9 +56,9 @@ struct ListMediaRowView: View {
         }
     }
     
-    private func color(for status: MediaListItemModel.MediaItemState) -> Color {
+    private func color(for status: MediaState) -> Color {
         switch status {
-        case .watching:
+        case .inProgress:
             return .blue
         case .completed:
             return .green
@@ -66,8 +66,10 @@ struct ListMediaRowView: View {
             return .yellow
         case .dropped:
             return .red
-        case .planToWatch:
+        case .planning:
             return .gray
+        case .notInList:
+            return .clear
         }
     }
 }
@@ -89,62 +91,52 @@ struct ListMediaRowView_Previews: PreviewProvider {
     static var previews: some View {
         List {
             ListMediaRowView(
-                model: .constant(
-                    MediaListItemModel(
-                        name: "Name",
-                        state: .watching,
-                        currentEpisode: 1,
-                        totalEpisodes: 12,
-                        score: 8
-                    )
+                model: MediaListItemModel(
+                    name: "Name",
+                    state: .inProgress,
+                    currentEpisode: 1,
+                    totalEpisodes: 12,
+                    userScore: 8
                 )
             )
             
             ListMediaRowView(
-                model: .constant(
-                    MediaListItemModel(
-                        name: "Name",
-                        state: .completed,
-                        currentEpisode: 12,
-                        totalEpisodes: 12,
-                        score: 8
-                    )
+                model: MediaListItemModel(
+                    name: "Name",
+                    state: .completed,
+                    currentEpisode: 12,
+                    totalEpisodes: 12,
+                    userScore: 8
                 )
             )
             
             ListMediaRowView(
-                model: .constant(
-                    MediaListItemModel(
-                        name: "Name",
-                        state: .onHold,
-                        currentEpisode: 4,
-                        totalEpisodes: 12,
-                        score: 8
-                    )
+                model: MediaListItemModel(
+                    name: "Name",
+                    state: .onHold,
+                    currentEpisode: 4,
+                    totalEpisodes: 12,
+                    userScore: 8
                 )
             )
             
             ListMediaRowView(
-                model: .constant(
-                    MediaListItemModel(
-                        name: "Name",
-                        state: .planToWatch,
-                        currentEpisode: 0,
-                        totalEpisodes: 12,
-                        score: 8
-                    )
+                model: MediaListItemModel(
+                    name: "Name",
+                    state: .planning,
+                    currentEpisode: 0,
+                    totalEpisodes: 12,
+                    userScore: 8
                 )
             )
             
             ListMediaRowView(
-                model: .constant(
-                    MediaListItemModel(
-                        name: "Name",
-                        state: .dropped,
-                        currentEpisode: 4,
-                        totalEpisodes: 12,
-                        score: 8
-                    )
+                model: MediaListItemModel(
+                    name: "Name",
+                    state: .dropped,
+                    currentEpisode: 4,
+                    totalEpisodes: 12,
+                    userScore: 8
                 )
             )
         }

@@ -100,7 +100,7 @@ struct ExploreMediaRowView: View {
 
 struct ExploreMediaRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ExploreMediaRowView(model: MediaListItemModel(name: "Name", state: .completed, currentEpisode: 0, totalEpisodes: 0, score: 0), index: 1)
+        ExploreMediaRowView(model: MediaListItemModel(name: "Name", state: .completed, currentEpisode: 0, totalEpisodes: 0, userScore: 0), index: 1)
             .previewLayout(.fixed(width: 400, height: 150))
     }
 }

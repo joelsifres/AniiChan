@@ -13,48 +13,6 @@ protocol IterableEnum: CaseIterable, Identifiable {
 }
 
 struct MediaItemModel: Identifiable {
-    enum AnimeMediaState: String, CaseIterable, Identifiable {
-        case watching = "Watching"
-        case completedTV = "Completed TV"
-        case completedMovie = "Completed Movie"
-        case completedOVA = "Completed OVA"
-        case completedONA = "Completed ONA"
-        case completedTVShort = "Completed TV Short"
-        case completedSpecial = "Completed Special"
-        case completedMusic = "Completed Music"
-        case onHold = "On hold"
-        case dropped = "Dropped"
-        case planToWatch = "Plan to Watch"
-        case addToList = "Add to List"
-        
-        var id: String {
-            self.rawValue
-        }
-    }
-    
-    // Maybe if only the first is different we don't need two enums
-    enum MangaMediaState: String, CaseIterable, Identifiable {
-        case reading = "Watching"
-        case completedManga = "Completed Manga"
-        case completedOneShot = "Completed One Shot"
-        case paused = "Paused"
-        case dropped = "Dropped"
-        case planning = "Planning"
-        case addToList = "Add to List"
-        
-        var id: String {
-            self.rawValue
-        }
-    }
-    
-    enum MediaType: String, CaseIterable, Identifiable {
-        case anime = "Anime"
-        case manga = "Manga"
-        
-        var id: String {
-            self.rawValue
-        }
-    }
     
     enum AnimeMediaFormat: IterableEnum {
         case tv
@@ -103,7 +61,7 @@ struct MediaItemModel: Identifiable {
     let id = UUID()
     
     var name: String
-    var state: AnimeMediaState
+    var state: MediaState
     var currentEpisode: Int
     var totalEpisodes: Int
     var startDate: Date
@@ -113,20 +71,52 @@ struct MediaItemModel: Identifiable {
     var tags: [Tag] = []
     
     var imageURLString: String
-
-    mutating func increaseCurrentEpisode() {
-        guard state == .watching else { return }
-
-        currentEpisode = currentEpisode + 1
-
-        if currentEpisode == totalEpisodes {
-            state = .completedTV
-        }
-    }
 }
 
 extension MediaItemModel: Equatable {
     static func == (lhs: MediaItemModel, rhs: MediaItemModel) -> Bool {
         lhs.id == rhs.id
+    }
+}
+
+extension MediaItemModel {
+    static var mock: Self {
+        MediaItemModel(
+            name: "3-Gatsu no Lion 2",
+            state: .inProgress,
+            currentEpisode: 4,
+            totalEpisodes: 22,
+            startDate: Date(),
+            endDate: Date(),
+            rewatches: 0,
+            notes: "",
+            tags: [
+                Tag(
+                    text: "action",
+                    onTap: {}
+                ),
+                Tag(
+                    text: "drama",
+                    onTap: {}
+                ),
+                Tag(
+                    text: "psychological",
+                    onTap: {}
+                ),
+                Tag(
+                    text: "seinen",
+                    onTap: {}
+                ),
+                Tag(
+                    text: "slice of life",
+                    onTap: {}
+                ),
+                Tag(
+                    text: "school",
+                    onTap: {}
+                ),
+            ],
+            imageURLString: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg"
+        )
     }
 }

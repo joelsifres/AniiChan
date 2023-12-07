@@ -7,196 +7,215 @@
 
 import SwiftUI
 import Observation
+import ComposableArchitecture
+import IdentifiedCollections
+
 
 struct MediaListView: View {
-    @Bindable var viewModel: MediaListViewModel
+    @Bindable var store: StoreOf<MediaListFeature>
     
     @State var isPresented: Bool = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List {
-                    ForEach(MediaListItemModel.MediaItemState.allCases) { state in
-                        Section {
-                            ForEach($viewModel.selectedList.filter { $0.wrappedValue.state == state }) { $entry in
-                                NavigationLink {
-                                    MediaDetailView(viewModel: MediaDetailViewModel())
-                                } label: {
-                                    ListMediaRowView(model: $entry)
-                                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                                            Button {
-                                                entry.increaseCurrentEpisode()
-                                            } label: {
-                                                Image(systemName: "plus.circle.fill")
+                    ForEach(MediaState.allCases) { state in
+                        if store.visibleMedia.filter({ $0.state == state }).isEmpty == false {
+                            Section {
+                                ForEach(store.visibleMedia.filter { $0.state == state }) { entry in
+                                    NavigationLink {
+                                        Text("Media Detail View Navigation TODO")
+                                    } label: {
+                                        Text("")
+                                        ListMediaRowView(model: entry)
+                                            .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                                                Button {
+                                                    store.send(.onIncreaseCurrentEpisode(entry))
+                                                } label: {
+                                                    Image(systemName: "plus.circle.fill")
+                                                }
+                                                .tint(.green)
+                                                .disabled(entry.state != .inProgress)
                                             }
-                                            .tint(.green)
-                                            .disabled(entry.state != .watching)
-                                        }
-                                        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                                            Button {
-                                                self.isPresented.toggle()
-                                            } label: {
-                                                Image(systemName: "square.and.pencil.circle.fill")
+                                            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                                                Button {
+                                                    self.isPresented.toggle()
+                                                } label: {
+                                                    Image(systemName: "square.and.pencil.circle.fill")
+                                                }
+                                                .tint(.orange)
                                             }
-                                            .tint(.orange)
-                                        }
+                                    }
+                                }
+                            } header: {
+                                Text(state.stringValue(for: store.selectedPage))
+                            } footer: {
+                                HStack {
+                                    Spacer()
+                                    
+                                    Text("\(store.visibleMedia.filter { $0.state == state }.count) entries")
                                 }
                             }
-                        } header: {
-                            Text(state.rawValue)
-                        } footer: {
-                            HStack {
-                                Spacer()
-                                
-                                Text("\($viewModel.selectedList.filter { $0.wrappedValue.state == state }.count) entries")
-                            }
                         }
                     }
                 }
-            }
-            .navigationTitle("Kipik's \(viewModel.selectedPage == .anime ? "Anime" : "Manga") List")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar(.visible, for: .navigationBar)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
+                .navigationTitle("Kipik's \(store.selectedPage == .anime ? "Anime" : "Manga") List")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar(.visible, for: .navigationBar)
+                .toolbar {
+                    ToolbarItem {
+                        Menu {
+                            Section {
+                                ForEach(SortingFilter.allCases) { filter in
+                                    Button {
+                                        store.send(.sort(filter))
+                                    } label: {
+                                        Text(filter.stringValue)
+                                    }
+                                }
+                            }
+                            
+                            Section {
+                                Button {
+                                    store.send(.toggleOrder)
+                                } label: {
+                                    Text(store.currentSortingFilterOrder == .ascending ? "Ascending" : "Descending")
+                                    Image(systemName: store.currentSortingFilterOrder == .ascending ? "arrow.up" : "arrow.down")
+                                }
+                            }
+                        } label: {
+                            Image(systemName: "line.3.horizontal")
+                        }
+                    }
+                }
+                .toolbarTitleMenu {
                     Button {
-                        viewModel.toggleOrder()
+                        store.send(.setSelectedPage(.anime))
                     } label: {
-                        Image(systemName: viewModel.currentSortingFilterOrder == .ascending ? "arrow.up" : "arrow.down")
+                        Text("Anime")
+                        Image(systemName: "play.rectangle")
+                    }
+                    
+                    Button {
+                        store.send(.setSelectedPage(.manga))
+                    } label: {
+                        Text("Manga")
+                        Image(systemName: "book")
                     }
                 }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    Menu {
-                        ForEach(MediaListViewModel.SortingFilter.allCases) { filter in
-                            Button {
-                                viewModel.sort(by: filter)
-                            } label: {
-                                Text(filter.stringValue)
-                            }
-                        }
-                    } label: {
-                        Image(systemName: "line.3.horizontal")
-                    }
+                .sheet(isPresented: $isPresented) {
+                    ListEntryEditorView(viewModel: ListEntryEditorViewModel())
                 }
-            }
-            .toolbarTitleMenu {
-                Button {
-                    viewModel.setSelectedPage(to: .anime)
-                } label: {
-                    Text("Anime")
-                    Image(systemName: "play.rectangle")
-                }
-                
-                Button {
-                    viewModel.setSelectedPage(to: .manga)
-                } label: {
-                    Text("Manga")
-                    Image(systemName: "book")
-                }
-            }
-            .searchable(text: $viewModel.searchWord, prompt: "Search Kipik's List")
-            .sheet(isPresented: $isPresented) {
-                ListEntryEditorView(viewModel: ListEntryEditorViewModel())
+                .searchable(text: $store.searchWord.sending(\.onSearchWordChanged), prompt: "Search Kipik's List")
             }
         }
     }
 }
 
-struct MediaListView_Previews: PreviewProvider {
-    
-    static let viewModel = MediaListViewModel(
-        userAnimeLists: [
-            MediaListItemModel(
-                name: "Cardcaptor Sakura",
-                state: .watching,
-                currentEpisode: 13,
-                totalEpisodes: 70,
-                score: 0
-            ),
-            MediaListItemModel(
-                name: "Cowboy Bebop",
-                state: .completed,
-                currentEpisode: 26,
-                totalEpisodes: 26,
-                score: 8
-            ),
-            MediaListItemModel(
-                name: "Neon Genesis Evangelion",
-                state: .completed,
-                currentEpisode: 26,
-                totalEpisodes: 26,
-                score: 8
-            ),
-            MediaListItemModel(
-                name: "Aku no Hana",
-                state: .completed,
-                currentEpisode: 13,
-                totalEpisodes: 13,
-                score: 10
-            ),
-            MediaListItemModel(
-                name: "Mousou Dairinin",
-                state: .completed,
-                currentEpisode: 13,
-                totalEpisodes: 13,
-                score: 6
-            ),
-            MediaListItemModel(
-                name: "The Wind Rises",
-                state: .completed,
-                currentEpisode: 1,
-                totalEpisodes: 1,
-                score: 10
-            ),
-            MediaListItemModel(
-                name: "Tsuritama",
-                state: .completed,
-                currentEpisode: 12,
-                totalEpisodes: 12,
-                score: 8
-            ),
-            MediaListItemModel(
-                name: "Uchoten Kazoku",
-                state: .onHold,
-                currentEpisode: 11,
-                totalEpisodes: 13,
-                score: 6
-            ),
-            MediaListItemModel(
-                name: "Chainsaw Man",
-                state: .dropped,
-                currentEpisode: 1,
-                totalEpisodes: 25,
-                score: 2
-            ),
-            MediaListItemModel(
-                name: "Akagge no Anne",
-                state: .planToWatch,
-                currentEpisode: 0,
-                totalEpisodes: 50,
-                score: 0
-            ),
-            MediaListItemModel(
-                name: "ARIA the AVVENIRE",
-                state: .planToWatch,
-                currentEpisode: 0,
-                totalEpisodes: 3,
-                score: 0
-            ),
-            MediaListItemModel(
-                name: "Bartender",
-                state: .planToWatch,
-                currentEpisode: 0,
-                totalEpisodes: 11,
-                score: 0
-            )
-        ],
-        userMangaList: []
-    )
-    
-    static var previews: some View {
-        MediaListView(viewModel: viewModel)
+#Preview("Media List View") {
+    NavigationView {
+        MediaListView(
+            store: Store(
+                initialState: MediaListFeature.State(
+                    selectedPage: .anime,
+                    visibleMedia: PreviewUtils.animeList,
+                    userAnimeList: PreviewUtils.animeList,
+                    userMangaList: PreviewUtils.animeList)
+            ) {
+                MediaListFeature()
+                    ._printChanges()
+            }
+        )
     }
+}
+
+fileprivate enum PreviewUtils {
+    
+    static let animeList: IdentifiedArrayOf<MediaListItemModel> = [
+        MediaListItemModel(
+            name: "Cardcaptor Sakura",
+            state: .inProgress,
+            currentEpisode: 13,
+            totalEpisodes: 70,
+            userScore: 0
+        ),
+        MediaListItemModel(
+            name: "Cowboy Bebop",
+            state: .completed,
+            currentEpisode: 26,
+            totalEpisodes: 26,
+            userScore: 8
+        ),
+        MediaListItemModel(
+            name: "Neon Genesis Evangelion",
+            state: .completed,
+            currentEpisode: 26,
+            totalEpisodes: 26,
+            userScore: 8
+        ),
+        MediaListItemModel(
+            name: "Aku no Hana",
+            state: .completed,
+            currentEpisode: 13,
+            totalEpisodes: 13,
+            userScore: 10
+        ),
+        MediaListItemModel(
+            name: "Mousou Dairinin",
+            state: .completed,
+            currentEpisode: 13,
+            totalEpisodes: 13,
+            userScore: 6
+        ),
+        MediaListItemModel(
+            name: "The Wind Rises",
+            state: .completed,
+            currentEpisode: 1,
+            totalEpisodes: 1,
+            userScore: 10
+        ),
+        MediaListItemModel(
+            name: "Tsuritama",
+            state: .completed,
+            currentEpisode: 12,
+            totalEpisodes: 12,
+            userScore: 8
+        ),
+        MediaListItemModel(
+            name: "Uchoten Kazoku",
+            state: .onHold,
+            currentEpisode: 11,
+            totalEpisodes: 13,
+            userScore: 6
+        ),
+        MediaListItemModel(
+            name: "Chainsaw Man",
+            state: .dropped,
+            currentEpisode: 1,
+            totalEpisodes: 25,
+            userScore: 2
+        ),
+        MediaListItemModel(
+            name: "Akagge no Anne",
+            state: .planning,
+            currentEpisode: 0,
+            totalEpisodes: 50,
+            userScore: 0
+        ),
+        MediaListItemModel(
+            name: "ARIA the AVVENIRE",
+            state: .planning,
+            currentEpisode: 0,
+            totalEpisodes: 3,
+            userScore: 0
+        ),
+        MediaListItemModel(
+            name: "Bartender",
+            state: .planning,
+            currentEpisode: 0,
+            totalEpisodes: 11,
+            userScore: 0
+        )
+    ]
 }

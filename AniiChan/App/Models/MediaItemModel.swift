@@ -64,8 +64,12 @@ struct MediaItemModel: Identifiable {
     var state: MediaState
     var currentEpisode: Int
     var totalEpisodes: Int
+    var userScore: Double
     var startDate: Date
     var endDate: Date
+    var releaseDate: Date = Date()
+    var lastUpdated: Date = Date()
+    var lastAdded: Date = Date()
     var rewatches: Int
     var notes: String
     var tags: [Tag] = []
@@ -86,6 +90,7 @@ extension MediaItemModel {
             state: .inProgress,
             currentEpisode: 4,
             totalEpisodes: 22,
+            userScore: 3.0,
             startDate: Date(),
             endDate: Date(),
             rewatches: 0,

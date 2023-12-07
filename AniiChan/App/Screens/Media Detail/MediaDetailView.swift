@@ -15,8 +15,7 @@ struct MediaDetailView: View {
         case scrollView
     }
     
-    @Bindable var store: StoreOf<MediaDetailFeature>
-    typealias MediaDetailStore = ViewStore<MediaDetailFeature.State, MediaDetailFeature.Action>
+    @Bindable var store: StoreOf<MediaDetail>
     
     @State private var imageSize = CGSize()
     @State var isSynopsisExpanded: Bool = false
@@ -67,7 +66,7 @@ struct MediaDetailView: View {
         }
         .coordinateSpace(name: CoordinateSpaces.scrollView)
         .edgesIgnoringSafeArea(.top)
-        .navigationTitle(showToolBar ? "3-Gatsu no Lion 2" : "")
+        .navigationTitle(showToolBar ? store.media.name : "")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(showToolBar ? .visible : .hidden, for: .navigationBar)
         .toolbar {
@@ -96,7 +95,7 @@ fileprivate extension MediaDetailView {
     // MARK: Header
     var headerImage: some View {
         AsyncImage(
-            url: URL(string: store.media.imageURLString)!
+            url: URL(string: store.media.imageURLString) ?? URL(string: "https://s4.anilist.co/file/anilistcdn/media/anime/cover/large/bx98478-dF3mpSKiZkQu.jpg")!
         ) { phase in
             switch phase {
             case .success(let image):
@@ -125,7 +124,7 @@ fileprivate extension MediaDetailView {
         VStack {
             Spacer()
             
-            Text("3-Gatsu no Lion 2")
+            Text(store.media.name)
                 .font(.title)
                 .bold()
                 .foregroundColor(Color(UIColor.label))
@@ -536,11 +535,11 @@ fileprivate extension MediaDetailView {
     NavigationView {
         MediaDetailView(
             store: Store(
-                initialState: MediaDetailFeature.State(
+                initialState: MediaDetail.State(
                     media: MediaItemModel.mock
                 )
             ) {
-                MediaDetailFeature()
+                MediaDetail()
                     ._printChanges()
             }
         )

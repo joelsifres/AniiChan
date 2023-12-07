@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExploreMediaRowView: View {
     
-    let model: MediaListItemModel
+    let model: MediaItemModel
     let index: Int
     
     var indexColor: Color {
@@ -100,7 +100,21 @@ struct ExploreMediaRowView: View {
 
 struct ExploreMediaRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ExploreMediaRowView(model: MediaListItemModel(name: "Name", state: .completed, currentEpisode: 0, totalEpisodes: 0, userScore: 0), index: 1)
-            .previewLayout(.fixed(width: 400, height: 150))
+        ExploreMediaRowView(
+            model: MediaItemModel(
+                name: "Name",
+                state: .completed,
+                currentEpisode: 0,
+                totalEpisodes: 0,
+                userScore: 0,
+                startDate: Date(),
+                endDate: Date(),
+                rewatches: 0,
+                notes: "",
+                imageURLString: ""
+            ),
+            index: 1
+        )
+        .previewLayout(.fixed(width: 400, height: 150))
     }
 }

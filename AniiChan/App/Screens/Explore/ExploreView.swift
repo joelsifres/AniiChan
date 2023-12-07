@@ -354,7 +354,21 @@ extension ExploreContentView {
             ScrollView(.vertical) {
                 LazyVStack(spacing: 16) {
                     ForEach(1...10, id: \.self) { index in
-                        ExploreMediaRowView(model: MediaListItemModel(name: "", state: .planning, currentEpisode: 0, totalEpisodes: 0, userScore: 0), index: index)
+                        ExploreMediaRowView(
+                            model: MediaItemModel(
+                                name: "Name",
+                                state: .completed,
+                                currentEpisode: 0,
+                                totalEpisodes: 0,
+                                userScore: 0,
+                                startDate: Date(),
+                                endDate: Date(),
+                                rewatches: 0,
+                                notes: "",
+                                imageURLString: ""
+                            ), 
+                            index: index
+                        )
                     }
                 }
                 .padding([.horizontal, .bottom])

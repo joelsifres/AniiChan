@@ -47,11 +47,6 @@ struct ProfileView: View {
                 Button {
                     
                 } label: {
-                    Image(systemName: "square.and.arrow.up")
-                }
-                Button {
-                    
-                } label: {
                     Image(systemName: "gearshape.fill")
                 }
             }

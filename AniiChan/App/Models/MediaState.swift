@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MediaState: CaseIterable, Identifiable {
+enum MediaState: CaseIterable, Identifiable, Equatable {
     case inProgress
     case completed
     case onHold
@@ -56,7 +56,7 @@ enum MediaState: CaseIterable, Identifiable {
     }
 }
 
-enum MediaType: String, CaseIterable, Identifiable {
+enum MediaType: String, CaseIterable, Identifiable, Equatable {
     case anime = "Anime"
     case manga = "Manga"
     

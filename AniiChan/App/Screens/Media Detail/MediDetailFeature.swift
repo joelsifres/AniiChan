@@ -9,7 +9,8 @@ import Foundation
 import ComposableArchitecture
 
 @Reducer
-struct MediaDetailFeature {
+struct MediaDetail {
+    
     @ObservableState
     struct State {
         var media: MediaItemModel

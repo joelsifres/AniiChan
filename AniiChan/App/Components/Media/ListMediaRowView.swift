@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ListMediaRowView: View {
-    var model: MediaListItemModel
+    var model: MediaItemModel
 
     var body: some View {
         HStack {
@@ -91,52 +91,77 @@ struct ListMediaRowView_Previews: PreviewProvider {
     static var previews: some View {
         List {
             ListMediaRowView(
-                model: MediaListItemModel(
+                model: MediaItemModel(
                     name: "Name",
                     state: .inProgress,
                     currentEpisode: 1,
                     totalEpisodes: 12,
-                    userScore: 8
+                    userScore: 0,
+                    startDate: Date(),
+                    endDate: Date(),
+                    rewatches: 0,
+                    notes: "",
+                    imageURLString: ""
                 )
             )
             
             ListMediaRowView(
-                model: MediaListItemModel(
+                model: MediaItemModel(
                     name: "Name",
                     state: .completed,
                     currentEpisode: 12,
                     totalEpisodes: 12,
-                    userScore: 8
+                    userScore: 4,
+                    startDate: Date(),
+                    endDate: Date(),
+                    rewatches: 0,
+                    notes: "",
+                    imageURLString: ""
                 )
             )
             
             ListMediaRowView(
-                model: MediaListItemModel(
+                model: MediaItemModel(
                     name: "Name",
                     state: .onHold,
-                    currentEpisode: 4,
+                    currentEpisode: 3,
                     totalEpisodes: 12,
-                    userScore: 8
+                    userScore: 0,
+                    startDate: Date(),
+                    endDate: Date(),
+                    rewatches: 0,
+                    notes: "",
+                    imageURLString: ""
                 )
             )
             
             ListMediaRowView(
-                model: MediaListItemModel(
+                model: MediaItemModel(
                     name: "Name",
                     state: .planning,
                     currentEpisode: 0,
                     totalEpisodes: 12,
-                    userScore: 8
+                    userScore: 0,
+                    startDate: Date(),
+                    endDate: Date(),
+                    rewatches: 0,
+                    notes: "",
+                    imageURLString: ""
                 )
             )
             
             ListMediaRowView(
-                model: MediaListItemModel(
+                model: MediaItemModel(
                     name: "Name",
                     state: .dropped,
-                    currentEpisode: 4,
+                    currentEpisode: 1,
                     totalEpisodes: 12,
-                    userScore: 8
+                    userScore: 2.0,
+                    startDate: Date(),
+                    endDate: Date(),
+                    rewatches: 0,
+                    notes: "",
+                    imageURLString: ""
                 )
             )
         }

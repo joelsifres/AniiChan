@@ -12,22 +12,22 @@ import IdentifiedCollections
 
 
 struct MediaListView: View {
-    @Bindable var store: StoreOf<MediaListFeature>
+    
+    @Bindable var store: StoreOf<MediaList>
     
     @State var isPresented: Bool = false
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $store.scope(state: \.path, action: \.path)) {
             VStack {
                 List {
                     ForEach(MediaState.allCases) { state in
                         if store.visibleMedia.filter({ $0.state == state }).isEmpty == false {
                             Section {
                                 ForEach(store.visibleMedia.filter { $0.state == state }) { entry in
-                                    NavigationLink {
-                                        Text("Media Detail View Navigation TODO")
-                                    } label: {
-                                        Text("")
+                                    NavigationLink(
+                                        state: MediaDetail.State(media: entry)
+                                    ) {
                                         ListMediaRowView(model: entry)
                                             .swipeActions(edge: .leading, allowsFullSwipe: true) {
                                                 Button {
@@ -109,6 +109,8 @@ struct MediaListView: View {
                 }
                 .searchable(text: $store.searchWord.sending(\.onSearchWordChanged), prompt: "Search Kipik's List")
             }
+        } destination: { store in
+            MediaDetailView(store: store)
         }
     }
 }
@@ -117,13 +119,13 @@ struct MediaListView: View {
     NavigationView {
         MediaListView(
             store: Store(
-                initialState: MediaListFeature.State(
+                initialState: MediaList.State(
                     selectedPage: .anime,
                     visibleMedia: PreviewUtils.animeList,
                     userAnimeList: PreviewUtils.animeList,
                     userMangaList: PreviewUtils.mangaList)
             ) {
-                MediaListFeature()
+                MediaList()
                     ._printChanges()
             }
         )
@@ -132,177 +134,177 @@ struct MediaListView: View {
 
 fileprivate enum PreviewUtils {
     
-    static let animeList: IdentifiedArrayOf<MediaListItemModel> = [
-        MediaListItemModel(
-            name: "Cardcaptor Sakura",
-            state: .inProgress,
-            currentEpisode: 13,
-            totalEpisodes: 70,
-            userScore: 0
-        ),
-        MediaListItemModel(
-            name: "Cowboy Bebop",
-            state: .completed,
-            currentEpisode: 26,
-            totalEpisodes: 26,
-            userScore: 8
-        ),
-        MediaListItemModel(
-            name: "Neon Genesis Evangelion",
-            state: .completed,
-            currentEpisode: 26,
-            totalEpisodes: 26,
-            userScore: 8
-        ),
-        MediaListItemModel(
-            name: "Aku no Hana",
-            state: .completed,
-            currentEpisode: 13,
-            totalEpisodes: 13,
-            userScore: 10
-        ),
-        MediaListItemModel(
-            name: "Mousou Dairinin",
-            state: .completed,
-            currentEpisode: 13,
-            totalEpisodes: 13,
-            userScore: 6
-        ),
-        MediaListItemModel(
-            name: "The Wind Rises",
-            state: .completed,
-            currentEpisode: 1,
-            totalEpisodes: 1,
-            userScore: 10
-        ),
-        MediaListItemModel(
-            name: "Tsuritama",
-            state: .completed,
-            currentEpisode: 12,
-            totalEpisodes: 12,
-            userScore: 8
-        ),
-        MediaListItemModel(
-            name: "Uchoten Kazoku",
-            state: .onHold,
-            currentEpisode: 11,
-            totalEpisodes: 13,
-            userScore: 6
-        ),
-        MediaListItemModel(
-            name: "Chainsaw Man",
-            state: .dropped,
-            currentEpisode: 1,
-            totalEpisodes: 25,
-            userScore: 2
-        ),
-        MediaListItemModel(
-            name: "Akagge no Anne",
-            state: .planning,
-            currentEpisode: 0,
-            totalEpisodes: 50,
-            userScore: 0
-        ),
-        MediaListItemModel(
-            name: "ARIA the AVVENIRE",
-            state: .planning,
-            currentEpisode: 0,
-            totalEpisodes: 3,
-            userScore: 0
-        ),
-        MediaListItemModel(
-            name: "Bartender",
-            state: .planning,
-            currentEpisode: 0,
-            totalEpisodes: 11,
-            userScore: 0
-        )
+    static let animeList: IdentifiedArrayOf<MediaItemModel> = [
+//        MediaListItemModel(
+//            name: "Cardcaptor Sakura",
+//            state: .inProgress,
+//            currentEpisode: 13,
+//            totalEpisodes: 70,
+//            userScore: 0
+//        ),
+//        MediaListItemModel(
+//            name: "Cowboy Bebop",
+//            state: .completed,
+//            currentEpisode: 26,
+//            totalEpisodes: 26,
+//            userScore: 8
+//        ),
+//        MediaListItemModel(
+//            name: "Neon Genesis Evangelion",
+//            state: .completed,
+//            currentEpisode: 26,
+//            totalEpisodes: 26,
+//            userScore: 8
+//        ),
+//        MediaListItemModel(
+//            name: "Aku no Hana",
+//            state: .completed,
+//            currentEpisode: 13,
+//            totalEpisodes: 13,
+//            userScore: 10
+//        ),
+//        MediaListItemModel(
+//            name: "Mousou Dairinin",
+//            state: .completed,
+//            currentEpisode: 13,
+//            totalEpisodes: 13,
+//            userScore: 6
+//        ),
+//        MediaListItemModel(
+//            name: "The Wind Rises",
+//            state: .completed,
+//            currentEpisode: 1,
+//            totalEpisodes: 1,
+//            userScore: 10
+//        ),
+//        MediaListItemModel(
+//            name: "Tsuritama",
+//            state: .completed,
+//            currentEpisode: 12,
+//            totalEpisodes: 12,
+//            userScore: 8
+//        ),
+//        MediaListItemModel(
+//            name: "Uchoten Kazoku",
+//            state: .onHold,
+//            currentEpisode: 11,
+//            totalEpisodes: 13,
+//            userScore: 6
+//        ),
+//        MediaListItemModel(
+//            name: "Chainsaw Man",
+//            state: .dropped,
+//            currentEpisode: 1,
+//            totalEpisodes: 25,
+//            userScore: 2
+//        ),
+//        MediaListItemModel(
+//            name: "Akagge no Anne",
+//            state: .planning,
+//            currentEpisode: 0,
+//            totalEpisodes: 50,
+//            userScore: 0
+//        ),
+//        MediaListItemModel(
+//            name: "ARIA the AVVENIRE",
+//            state: .planning,
+//            currentEpisode: 0,
+//            totalEpisodes: 3,
+//            userScore: 0
+//        ),
+//        MediaListItemModel(
+//            name: "Bartender",
+//            state: .planning,
+//            currentEpisode: 0,
+//            totalEpisodes: 11,
+//            userScore: 0
+//        )
     ]
     
-    static let mangaList: IdentifiedArrayOf<MediaListItemModel> = [
-        MediaListItemModel(
-            name: "Cardcaptor Sakura",
-            state: .inProgress,
-            currentEpisode: 13,
-            totalEpisodes: 70,
-            userScore: 0
-        ),
-        MediaListItemModel(
-            name: "Cowboy Bebop",
-            state: .completed,
-            currentEpisode: 26,
-            totalEpisodes: 26,
-            userScore: 8
-        ),
-        MediaListItemModel(
-            name: "Neon Genesis Evangelion",
-            state: .completed,
-            currentEpisode: 26,
-            totalEpisodes: 26,
-            userScore: 8
-        ),
-        MediaListItemModel(
-            name: "Aku no Hana",
-            state: .completed,
-            currentEpisode: 13,
-            totalEpisodes: 13,
-            userScore: 10
-        ),
-        MediaListItemModel(
-            name: "Mousou Dairinin",
-            state: .completed,
-            currentEpisode: 13,
-            totalEpisodes: 13,
-            userScore: 6
-        ),
-        MediaListItemModel(
-            name: "The Wind Rises",
-            state: .completed,
-            currentEpisode: 1,
-            totalEpisodes: 1,
-            userScore: 10
-        ),
-        MediaListItemModel(
-            name: "Tsuritama",
-            state: .completed,
-            currentEpisode: 12,
-            totalEpisodes: 12,
-            userScore: 8
-        ),
-        MediaListItemModel(
-            name: "Uchoten Kazoku",
-            state: .onHold,
-            currentEpisode: 11,
-            totalEpisodes: 13,
-            userScore: 6
-        ),
-        MediaListItemModel(
-            name: "Chainsaw Man",
-            state: .dropped,
-            currentEpisode: 1,
-            totalEpisodes: 25,
-            userScore: 2
-        ),
-        MediaListItemModel(
-            name: "Akagge no Anne",
-            state: .planning,
-            currentEpisode: 0,
-            totalEpisodes: 50,
-            userScore: 0
-        ),
-        MediaListItemModel(
-            name: "ARIA the AVVENIRE",
-            state: .planning,
-            currentEpisode: 0,
-            totalEpisodes: 3,
-            userScore: 0
-        ),
-        MediaListItemModel(
-            name: "Bartender",
-            state: .planning,
-            currentEpisode: 0,
-            totalEpisodes: 11,
-            userScore: 0
-        )
+    static let mangaList: IdentifiedArrayOf<MediaItemModel> = [
+//        MediaListItemModel(
+//            name: "Cardcaptor Sakura",
+//            state: .inProgress,
+//            currentEpisode: 13,
+//            totalEpisodes: 70,
+//            userScore: 0
+//        ),
+//        MediaListItemModel(
+//            name: "Cowboy Bebop",
+//            state: .completed,
+//            currentEpisode: 26,
+//            totalEpisodes: 26,
+//            userScore: 8
+//        ),
+//        MediaListItemModel(
+//            name: "Neon Genesis Evangelion",
+//            state: .completed,
+//            currentEpisode: 26,
+//            totalEpisodes: 26,
+//            userScore: 8
+//        ),
+//        MediaListItemModel(
+//            name: "Aku no Hana",
+//            state: .completed,
+//            currentEpisode: 13,
+//            totalEpisodes: 13,
+//            userScore: 10
+//        ),
+//        MediaListItemModel(
+//            name: "Mousou Dairinin",
+//            state: .completed,
+//            currentEpisode: 13,
+//            totalEpisodes: 13,
+//            userScore: 6
+//        ),
+//        MediaListItemModel(
+//            name: "The Wind Rises",
+//            state: .completed,
+//            currentEpisode: 1,
+//            totalEpisodes: 1,
+//            userScore: 10
+//        ),
+//        MediaListItemModel(
+//            name: "Tsuritama",
+//            state: .completed,
+//            currentEpisode: 12,
+//            totalEpisodes: 12,
+//            userScore: 8
+//        ),
+//        MediaListItemModel(
+//            name: "Uchoten Kazoku",
+//            state: .onHold,
+//            currentEpisode: 11,
+//            totalEpisodes: 13,
+//            userScore: 6
+//        ),
+//        MediaListItemModel(
+//            name: "Chainsaw Man",
+//            state: .dropped,
+//            currentEpisode: 1,
+//            totalEpisodes: 25,
+//            userScore: 2
+//        ),
+//        MediaListItemModel(
+//            name: "Akagge no Anne",
+//            state: .planning,
+//            currentEpisode: 0,
+//            totalEpisodes: 50,
+//            userScore: 0
+//        ),
+//        MediaListItemModel(
+//            name: "ARIA the AVVENIRE",
+//            state: .planning,
+//            currentEpisode: 0,
+//            totalEpisodes: 3,
+//            userScore: 0
+//        ),
+//        MediaListItemModel(
+//            name: "Bartender",
+//            state: .planning,
+//            currentEpisode: 0,
+//            totalEpisodes: 11,
+//            userScore: 0
+//        )
     ]
 }

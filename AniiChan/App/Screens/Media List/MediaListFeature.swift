@@ -8,12 +8,12 @@
 import Foundation
 import ComposableArchitecture
 
-protocol Filter: Identifiable, CaseIterable {
+protocol Filter: Identifiable, CaseIterable, Equatable {
     var id: String { get }
     var stringValue: String { get }
 }
 
-enum SortingFilter: Filter {
+enum SortingFilter: Filter, Equatable {
     case state
     case title
     case score
@@ -46,38 +46,61 @@ enum SortingFilter: Filter {
     }
 }
 
-enum SortingFilterOrder {
+enum SortingFilterOrder: Equatable {
     case ascending
     case descending
 }
 
 @Reducer
-struct MediaListFeature {
+struct MediaList {
+    
+    
+//    @Reducer
+//    struct Path {
+//        
+//        @ObservableState
+//        enum State {
+//            case detailItem(MediaDetail.State)
+//        }
+//        
+//        enum Action {
+//            case detailItem(MediaDetail.Action)
+//        }
+//        
+//        var body: some ReducerOf<Self> {
+//            Scope(state: \.detailItem, action: \.detailItem) {
+//                MediaDetail()
+//            }
+//        }
+//    }
     
     @Dependency(\.mainQueue) var mainQueue
     
     @ObservableState
     struct State {
+        var path: StackState<MediaDetail.State> = .init()
+        
         var selectedPage: MediaType = .anime
-        var visibleMedia: IdentifiedArrayOf<MediaListItemModel> = []
+        var visibleMedia: IdentifiedArrayOf<MediaItemModel> = []
         var currentSortingFilter: any Filter = SortingFilter.state
         var currentSortingFilterOrder: SortingFilterOrder = .descending
         
         var searchWord: String = ""
         
-        var userAnimeList: IdentifiedArrayOf<MediaListItemModel> = []
-        var userMangaList: IdentifiedArrayOf<MediaListItemModel> = []
+        var userAnimeList: IdentifiedArrayOf<MediaItemModel> = []
+        var userMangaList: IdentifiedArrayOf<MediaItemModel> = []
         
         var debounceDuration: DispatchQueue.SchedulerTimeType.Stride = 0.3
     }
     
     enum Action {
+        case path(StackAction<MediaDetail.State, MediaDetail.Action>)
         case onSearchWordChanged(String)
         case debounceSearchList(String)
         case setSelectedPage(MediaType)
         case sort(SortingFilter)
         case toggleOrder
-        case onIncreaseCurrentEpisode(MediaListItemModel)
+        case onIncreaseCurrentEpisode(MediaItemModel)
     }
     
     private enum CancelID {
@@ -87,6 +110,9 @@ struct MediaListFeature {
     var body: some ReducerOf<Self> {
         Reduce { state, action in
             switch action {
+            case .path(_):
+                return .none
+                
             case .onSearchWordChanged(let newWord):
                 state.searchWord = newWord
                 
@@ -203,6 +229,9 @@ struct MediaListFeature {
                 
                 return .none
             }
+        }
+        .forEach(\.path, action: \.path) {
+            MediaDetail()
         }
     }
 }

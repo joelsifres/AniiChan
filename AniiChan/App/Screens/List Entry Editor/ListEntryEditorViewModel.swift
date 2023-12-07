@@ -13,6 +13,7 @@ final class ListEntryEditorViewModel: ObservableObject {
                                                state: .planning,
                                                currentEpisode: 0,
                                                totalEpisodes: 24,
+                                               userScore: 3.0,
                                                startDate: Date(),
                                                endDate: Date(),
                                                rewatches: 0,

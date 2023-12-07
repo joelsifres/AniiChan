@@ -9,11 +9,11 @@
 /* Begin PBXBuildFile section */
 		CC154F9F2A4A0C8F00A13B5D /* ListEntryEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC154F9E2A4A0C8F00A13B5D /* ListEntryEditorViewModel.swift */; };
 		CC1E16C12B21E71D00CCEBA2 /* MediaState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1E16C02B21E71D00CCEBA2 /* MediaState.swift */; };
+		CC3B7BE22B22110A00DDEB85 /* ListMediaRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F33F2A3B7D8800EC065A /* ListMediaRowView.swift */; };
 		CC46D0372B20B36700E1D803 /* MediDetailFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC46D0362B20B36700E1D803 /* MediDetailFeature.swift */; };
 		CC46D0392B20B66300E1D803 /* MediaListFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC46D0382B20B66300E1D803 /* MediaListFeature.swift */; };
 		CC49F33A2A3B7CDE00EC065A /* MediaListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3392A3B7CDE00EC065A /* MediaListView.swift */; };
 		CC49F33E2A3B7D6200EC065A /* MediaListItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F33D2A3B7D6200EC065A /* MediaListItemModel.swift */; };
-		CC49F3402A3B7D8800EC065A /* ListMediaRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F33F2A3B7D8800EC065A /* ListMediaRowView.swift */; };
 		CC49F3432A3CDE9D00EC065A /* MediaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3422A3CDE9D00EC065A /* MediaDetailView.swift */; };
 		CC49F3472A3CE13F00EC065A /* MediaItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC49F3462A3CE13F00EC065A /* MediaItemModel.swift */; };
 		CC54A92C2A46E8B200B5C205 /* ExploreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC54A92B2A46E8B200B5C205 /* ExploreView.swift */; };
@@ -73,7 +73,7 @@
 		CC46D0382B20B66300E1D803 /* MediaListFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListFeature.swift; sourceTree = "<group>"; };
 		CC49F3392A3B7CDE00EC065A /* MediaListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListView.swift; sourceTree = "<group>"; };
 		CC49F33D2A3B7D6200EC065A /* MediaListItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaListItemModel.swift; sourceTree = "<group>"; };
-		CC49F33F2A3B7D8800EC065A /* ListMediaRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListMediaRowView.swift; path = AniiChan/Group/Components/Media/ListMediaRowView.swift; sourceTree = SOURCE_ROOT; };
+		CC49F33F2A3B7D8800EC065A /* ListMediaRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListMediaRowView.swift; path = AniiChan/App/Components/Media/ListMediaRowView.swift; sourceTree = SOURCE_ROOT; };
 		CC49F3422A3CDE9D00EC065A /* MediaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaDetailView.swift; sourceTree = "<group>"; };
 		CC49F3462A3CE13F00EC065A /* MediaItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaItemModel.swift; sourceTree = "<group>"; };
 		CC54A92B2A46E8B200B5C205 /* ExploreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreView.swift; sourceTree = "<group>"; };
@@ -138,7 +138,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CC49F3332A3B7C9900EC065A /* Group */ = {
+		CC49F3332A3B7C9900EC065A /* App */ = {
 			isa = PBXGroup;
 			children = (
 				CC5E8CDB2A3E28B600F97F71 /* Helpers */,
@@ -146,7 +146,7 @@
 				CC49F3362A3B7CAE00EC065A /* Models */,
 				CC49F3352A3B7CA600EC065A /* Screens */,
 			);
-			path = Group;
+			path = App;
 			sourceTree = "<group>";
 		};
 		CC49F3342A3B7C9F00EC065A /* Components */ = {
@@ -294,7 +294,7 @@
 		CCC34DBC2A3B75E800109341 /* AniiChan */ = {
 			isa = PBXGroup;
 			children = (
-				CC49F3332A3B7C9900EC065A /* Group */,
+				CC49F3332A3B7C9900EC065A /* App */,
 				CCC34DBD2A3B75E800109341 /* AniiChanApp.swift */,
 				CCC34DC12A3B75E900109341 /* Assets.xcassets */,
 				CCC34DC32A3B75E900109341 /* AniiChan.entitlements */,
@@ -503,10 +503,10 @@
 				CC54A92F2A46E96300B5C205 /* ExploreViewModel.swift in Sources */,
 				CC46D0372B20B36700E1D803 /* MediDetailFeature.swift in Sources */,
 				CC5E8CE32A3EEFFE00F97F71 /* UINavigationController+SwipeGesture.swift in Sources */,
-				CC49F3402A3B7D8800EC065A /* ListMediaRowView.swift in Sources */,
 				CC46D0392B20B66300E1D803 /* MediaListFeature.swift in Sources */,
 				CC5E8CF22A40CC5100F97F71 /* RatingStarView.swift in Sources */,
 				CC5E8CDF2A3E2DF700F97F71 /* View+ReadSize.swift in Sources */,
+				CC3B7BE22B22110A00DDEB85 /* ListMediaRowView.swift in Sources */,
 				CC49F3472A3CE13F00EC065A /* MediaItemModel.swift in Sources */,
 				CC49F3432A3CDE9D00EC065A /* MediaDetailView.swift in Sources */,
 				CC984CC02A68616B00A76D0F /* ProfileView.swift in Sources */,
